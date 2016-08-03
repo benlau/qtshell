@@ -26,27 +26,42 @@ API
 dirname
 -------
 
-    QString QtShell::dirname(const QString& pathname)
+    QString QtShell::dirname(const QString& pathname);
 
 Return directory portion of pathname
 
-    QString basename(const QString& path);
+basename
+--------
+
+    QString QtShell::basename(const QString& path);
 
 return filename portion of pathname
 
-    QStringList find(const QString& path, const QStringList& nameFilters = QStringList());
+find
+----
+
+    QStringList QtShell::find(const QString& path, const QStringList& nameFilters = QStringList());
 
 walk a file hierarchy
 
-    bool rmdir(const QString& path);
+rmdir
+-----
+
+    bool QtShell::rmdir(const QString& path);
 
 The rmdir utility removes the directory entry specified by each directory argument, provided it is empty.
 
-    bool touch(const QString &path);
+touch
+-----
+
+    bool QtShell::touch(const QString &path);
 
 The touch utility sets the modification and access times of files.  If any file does not exist, it is created with default permissions.
 
-    bool rm(const QString& file);
+rm
+--
+
+    bool QtShell::rm(const QString& file,bool recursive = false);
 
 Remove directory entries. (Recursive removal is not supported yet)
 
@@ -58,4 +73,10 @@ Examples:
 
     rm("*.txt"); // Remove all txt files in current path
 
-**bool QtShell::mkdir(const QString &path)**
+    rmp("/tmp/dir", true); // Remove a directory
+
+mkdir
+-----
+
+    bool QtShell::mkdir(const QString &path)
+

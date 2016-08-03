@@ -178,7 +178,7 @@ bool QtShell::touch(const QString &path)
     return res;
 }
 
-bool QtShell::rm(const QString &file)
+bool QtShell::rm(const QString &file, bool recursive)
 {
     bool res = true;
     QString folder = dirname(file);
@@ -202,8 +202,17 @@ bool QtShell::rm(const QString &file)
             continue;
         }
         if (file.isDir()) {
-            qWarning() << QString("rm: %1: is a directory").arg(file.fileName());
-            res = false;
+
+            if (!recursive) {
+                qWarning() << QString("rm: %1: is a directory").arg(file.fileName());
+                res = false;
+            } else {
+                QDir dir(file.absoluteFilePath());
+                if (!dir.removeRecursively()) {
+                    res = false;
+                    qWarning() << QString("rm: %1: can not remove the directory").arg(file.absoluteFilePath());
+                }
+            }
             continue;
         }
 

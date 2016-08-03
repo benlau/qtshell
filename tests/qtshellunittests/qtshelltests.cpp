@@ -83,6 +83,10 @@ void QtShellTests::rm()
 
     QtShell::mkdir("tmp");
     QVERIFY(!QtShell::rm("tmp"));
+    QDir dir("tmp");
+    QVERIFY(dir.exists());
+    QVERIFY(QtShell::rm("tmp", true));
+    QVERIFY(!dir.exists());
 }
 
 void QtShellTests::mkdir()
