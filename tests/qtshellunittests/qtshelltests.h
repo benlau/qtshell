@@ -8,6 +8,6 @@ public:
     explicit QtShellTests(QObject *parent = 0);
 
 private slots:
-    void testCase();
+    void find();
 };
 
