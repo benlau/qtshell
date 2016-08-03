@@ -11,6 +11,14 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 
 }
 
+void QtShellTests::basename()
+{
+    QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
+    QVERIFY(QtShell::basename("/tmp") == "tmp");
+    QVERIFY(QtShell::basename("/tmp/") == "tmp");
+
+}
+
 void QtShellTests::find()
 {
     QVERIFY(QtShell::find(".").size() > 0);
@@ -72,6 +80,9 @@ void QtShellTests::rm()
 
     QFileInfo info("tmp.txt");
     QVERIFY(!info.exists());
+
+    QtShell::mkdir("tmp");
+    QVERIFY(!QtShell::rm("tmp"));
 }
 
 void QtShellTests::mkdir()

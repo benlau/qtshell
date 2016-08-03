@@ -52,6 +52,19 @@ static QList<QFileInfo> filterLocalFiles(const QList<QFileInfo>& files) {
     return result;
 }
 
+static QStringList preservedPaths() {
+    QStringList preservePaths;
+    preservePaths << "/";
+
+    for (int i = QStandardPaths::DesktopLocation ;
+         i <= QStandardPaths::AppConfigLocation; i++) {
+        QStringList paths =  QStandardPaths::standardLocations((QStandardPaths::StandardLocation) i);
+        preservePaths.append(paths);
+    }
+
+    return preservePaths;
+}
+
 QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 {
     QDir dir(root);
@@ -173,6 +186,8 @@ bool QtShell::rm(const QString &file)
 
     QDir dir(folder);
 
+    QStringList preservePaths = preservedPaths();
+
     QList<QFileInfo> files = dir.entryInfoList(QStringList() << filter);
     files = filterLocalFiles(files);
 
@@ -182,6 +197,10 @@ bool QtShell::rm(const QString &file)
     }
 
     foreach (QFileInfo file, files) {
+        if (preservePaths.indexOf(file.absoluteFilePath()) >= 0) {
+            qWarning() << QString("rm: %1: is a preserved directory").arg(file.absoluteFilePath());
+            continue;
+        }
         if (file.isDir()) {
             qWarning() << QString("rm: %1: is a directory").arg(file.fileName());
             res = false;

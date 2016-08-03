@@ -8,6 +8,8 @@ public:
     explicit QtShellTests(QObject *parent = 0);
 
 private slots:
+    void basename();
+
     void find();
 
     void rmdir();
