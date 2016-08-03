@@ -21,9 +21,12 @@ You may skip this step if you are already using qpm.
     #include <QtShell>
 
 API
----
+===
 
-**QString QtShell::dirname(const QString& pathname)**
+dirname
+-------
+
+    QString QtShell::dirname(const QString& pathname)
 
 Return directory portion of pathname
 
