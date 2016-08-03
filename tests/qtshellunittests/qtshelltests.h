@@ -9,5 +9,7 @@ public:
 
 private slots:
     void find();
+
+    void rmdir();
 };
 

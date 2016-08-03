@@ -24,3 +24,25 @@ void QtShellTests::find()
 
 }
 
+void QtShellTests::rmdir()
+{
+    QDir dir("tmp");
+    QString tmpPath = dir.absolutePath();;
+
+    if (dir.exists()) {
+        dir.removeRecursively();
+    }
+
+    dir.mkpath(tmpPath);
+
+    QVERIFY(dir.exists());
+    QVERIFY(QtShell::rmdir(tmpPath));
+    QVERIFY(!dir.exists());
+
+    dir.mkdir(tmpPath);
+    QtShell::touch(tmpPath + "/files.txt");
+
+    QVERIFY(!QtShell::rmdir(tmpPath));
+    QVERIFY(dir.exists());
+}
+

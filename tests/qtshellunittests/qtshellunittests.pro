@@ -16,7 +16,8 @@ include(vendor/vendor.pri)
 include(../../qtshell.pri)
 
 DISTFILES += \
-    qpm.json
+    qpm.json \
+    ../../README.md
 
 HEADERS += \
     qtshelltests.h

@@ -1,5 +1,13 @@
+#include <QtCore>
 #include <QDir>
 #include <QQueue>
+
+#ifdef WIN32
+#include <sys/utime.h>
+#else
+#include <utime.h>
+#endif
+
 #include "qtshell.h"
 
 static bool match(const QString&fileName,const QStringList &nameFilters) {
@@ -15,6 +23,20 @@ static bool match(const QString&fileName,const QStringList &nameFilters) {
     }
 
     return res;
+}
+
+/// Take out "." and ".." files
+static QStringList filterLocalFiles(const QStringList& files) {
+    QStringList result;
+    for (int i = 0 ; i < files.size() ; i++) {
+        QString file = files[i];
+        if (file == "." || file == "..") {
+            continue;
+        }
+        result << file;
+    }
+
+    return result;
 }
 
 QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
@@ -90,4 +112,41 @@ QString QtShell::basename(const QString &path)
     }
 
     return result;
+}
+
+bool QtShell::rmdir(const QString &path)
+{
+    QDir dir(path);
+
+    QStringList entry = filterLocalFiles(dir.entryList());
+    if (entry.size() > 0) {
+        return false;
+    }
+
+    return dir.removeRecursively();
+}
+
+bool QtShell::touch(const QString &path)
+{
+    bool res = true;
+    QFileInfo info(path);
+
+    if (!info.exists()) {
+
+        QFile file(path);
+        if (!file.open(QIODevice::WriteOnly)) {
+            qWarning() << "Failed to create file:" << path;
+            res = false;
+        }
+        file.close();
+
+    } else {
+
+        if (utime(path.toLocal8Bit().constData(), 0) == -1) {
+            qWarning() << "utimes failed:" << path;
+            res = false;
+        }
+    }
+
+    return res;
 }
