@@ -1,0 +1,22 @@
+{
+  "name": "com.github.benlau.qtshell",
+  "description": "",
+  "author": {
+    "name": "Ben Lau",
+    "email": "xbenlau@gmail.com"
+  },
+  "repository": {
+    "type": "GITHUB",
+    "url": ""
+  },
+  "version": {
+    "label": "0.1",
+    "revision": "",
+    "fingerprint": ""
+  },
+  "dependencies": [
+  ],
+  "license": "MIT",
+  "pri_filename": "qtshell.pri",
+  "webpage": ""
+}
