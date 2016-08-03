@@ -18,6 +18,15 @@ void QtShellTests::test_basename()
     QVERIFY(basename("/tmp/") == "tmp");
 }
 
+void QtShellTests::test_dirname()
+{
+    QVERIFY(dirname("/tmp.txt") == "/");
+    QVERIFY(dirname("/") == "/");
+    QVERIFY(dirname("tmp.txt") == QDir::currentPath());
+    QVERIFY(dirname("A file not existed") == QDir::currentPath());
+
+}
+
 void QtShellTests::test_find()
 {
     QVERIFY(find(".").size() > 0);

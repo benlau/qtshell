@@ -80,3 +80,19 @@ mkdir
 
     bool QtShell::mkdir(const QString &path)
 
+Creates the directory. (-p is applied automatically)
+
+cp
+--
+
+    bool cp(const QString& source , const QString &target);
+
+Copy files
+
+Examples
+
+    cp("tmp.txt", "/tmp");
+
+    cp("*.txt", "/tmp");
+
+    cp("/tmp/123.txt", "456.txt");

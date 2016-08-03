@@ -10,6 +10,8 @@ public:
 private slots:
     void test_basename();
 
+    void test_dirname();
+
     void test_find();
 
     void test_rmdir();
