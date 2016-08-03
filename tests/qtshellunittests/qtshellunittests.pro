@@ -22,3 +22,6 @@ DISTFILES += \
 HEADERS += \
     qtshelltests.h
 
+RESOURCES += \
+    resource.qrc
+

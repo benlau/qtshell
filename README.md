@@ -63,7 +63,7 @@ rm
 
     bool QtShell::rm(const QString& file,bool recursive = false);
 
-Remove directory entries. (Recursive removal is not supported yet)
+Remove directory entries. Preserved paths (all paths defined in QStandPaths will not be removed)
 
 Examples:
 

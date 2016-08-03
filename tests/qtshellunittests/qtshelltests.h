@@ -19,5 +19,7 @@ private slots:
     void rm();
 
     void mkdir();
+
+    void cp();
 };
 

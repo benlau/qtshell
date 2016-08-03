@@ -180,6 +180,11 @@ bool QtShell::touch(const QString &path)
 
 bool QtShell::rm(const QString &file, bool recursive)
 {
+    if (file.isEmpty()) {
+        qWarning() << "rm: it do not accept empty argument";
+        return false;
+    }
+
     bool res = true;
     QString folder = dirname(file);
     QString filter = basename(file);
@@ -235,4 +240,48 @@ bool QtShell::mkdir(const QString &path)
     }
 
     return dir.mkpath(path);
+}
+
+bool QtShell::cp(const QString &source, const QString &target)
+{
+    if (source.isEmpty() || target.isEmpty()) {
+        qWarning() << "cp(const QString &source, const QString &target)";
+        return false;
+    }
+
+    bool res = true;
+    QString folder = dirname(source);
+    QString filter = basename(source);
+
+    QDir dir(folder);
+
+    QList<QFileInfo> files = dir.entryInfoList(QStringList() << filter);
+    files = filterLocalFiles(files);
+
+    if (files.size() == 0) {
+        qWarning() << QString("cp: %1: No such file or directory").arg(filter);
+        return false;
+    }
+
+    QFileInfo targetInfo(target);
+
+    foreach (QFileInfo file, files) {
+        if (file.isDir()) {
+            qWarning() << QString("cp: %1 is a directory (not copied)").arg(file.fileName());
+            continue;
+        }
+
+        QString targetFile = target;
+
+        if (targetInfo.isDir()) {
+            targetFile = target + "/" + file.fileName();
+        }
+
+        if (!QFile::copy(file.absoluteFilePath(), targetFile)) {
+            qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
+            res = false;
+        }
+    }
+
+    return res;
 }

@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "GITHUB",
-    "url": ""
+    "url": "https://github.com/benlau/qtshell.git"
   },
   "version": {
     "label": "0.1",
