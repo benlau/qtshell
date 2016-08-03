@@ -17,6 +17,8 @@ namespace QtShell {
 
     bool rm(const QString& file);
 
+    bool mkdir(const QString &path);
+
 }
 
 #endif // QTSHELL_H

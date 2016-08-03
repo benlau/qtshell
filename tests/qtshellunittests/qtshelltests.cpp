@@ -74,3 +74,16 @@ void QtShellTests::rm()
     QVERIFY(!info.exists());
 }
 
+void QtShellTests::mkdir()
+{
+    QDir dir("tmp");
+    if (dir.exists()) {
+        dir.removeRecursively();
+    }
+
+    QVERIFY(!dir.exists());
+    QVERIFY(QtShell::mkdir("tmp"));
+    QVERIFY(dir.exists());
+    QVERIFY(!QtShell::mkdir("tmp"));
+}
+

@@ -15,5 +15,7 @@ private slots:
     void touch();
 
     void rm();
+
+    void mkdir();
 };
 

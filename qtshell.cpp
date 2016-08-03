@@ -133,6 +133,7 @@ bool QtShell::rmdir(const QString &path)
 
     QStringList entry = filterLocalFiles(dir.entryList());
     if (entry.size() > 0) {
+        qWarning() << QString("rmdir: %1: Directory not empty").arg(path);
         return false;
     }
 
@@ -194,4 +195,16 @@ bool QtShell::rm(const QString &file)
     }
 
     return res;
+}
+
+bool QtShell::mkdir(const QString &path)
+{
+    QDir dir(path);
+
+    if (dir.exists()) {
+        qWarning() << QString("mkdir: %1: File exists").arg(path);
+        return false;
+    }
+
+    return dir.mkpath(path);
 }

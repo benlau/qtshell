@@ -4,14 +4,28 @@ QtShell - Manipulate files by a shell command style API
 Installation
 ------------
 
+For user who are already using qpm from qpm.io
+
+1) Run qpm install
+
     qpm install com.github.benlau.qtshell
+
+2) Include vendor/vendor.pri in your .pro file
+
+You may skip this step if you are already using qpm.
+
+    include(vendor/vendor.pri)
+
+3) Include header
+
+    #include <QtShell>
 
 API
 ---
 
-    QString dirname(const QString& path);
+**QString QtShell::dirname(const QString& pathname)**
 
-return directory portion of pathname
+Return directory portion of pathname
 
     QString basename(const QString& path);
 
@@ -39,4 +53,6 @@ Examples:
 
     rm("/tmp/*.txt");
 
+    rm("*.txt"); // Remove all txt files in current path
 
+**bool QtShell::mkdir(const QString &path)**
