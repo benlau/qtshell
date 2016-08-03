@@ -1,6 +1,7 @@
 #include <QQmlApplicationEngine>
 #include <QTest>
 #include <Automator>
+#include <QDir>
 #include "qtshelltests.h"
 #include "qtshell.h"
 
