@@ -128,9 +128,12 @@ QString QtShell::basename(const QString &path)
     QString result = "/";
     QStringList token = path.split("/");
 
+    qDebug() << token;
+
     int i = token.size() -1;
     while (i >=0) {
         QString name = token.at(i--);
+        qDebug() << name << i;
         if (!name.isEmpty()) {
             result = name;
             break;
