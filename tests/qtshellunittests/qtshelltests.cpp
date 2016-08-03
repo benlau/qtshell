@@ -16,6 +16,7 @@ void QtShellTests::test_basename()
 {
     QVERIFY(basename("/tmp.txt") == "tmp.txt");
     QVERIFY(basename("/tmp") == "tmp");
+    qDebug() << basename("/tmp/");
     QVERIFY(basename("/tmp/") == "tmp");
 }
 
