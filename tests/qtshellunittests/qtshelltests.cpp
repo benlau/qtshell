@@ -14,10 +14,9 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 
 void QtShellTests::test_basename()
 {
-    QVERIFY(basename("/tmp.txt") == "tmp.txt");
-    QVERIFY(basename("/tmp") == "tmp");
-    qDebug() << basename("/tmp/");
-    QVERIFY(basename("/tmp/") == "tmp");
+    QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
+    QVERIFY(QtShell::basename("/tmp") == "tmp");
+    QVERIFY(QtShell::basename("/tmp/") == "tmp");
 }
 
 void QtShellTests::test_dirname()
