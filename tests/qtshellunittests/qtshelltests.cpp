@@ -11,28 +11,27 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 
 }
 
-void QtShellTests::basename()
+void QtShellTests::test_basename()
 {
-    QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
-    QVERIFY(QtShell::basename("/tmp") == "tmp");
-    QVERIFY(QtShell::basename("/tmp/") == "tmp");
-
+    QVERIFY(basename("/tmp.txt") == "tmp.txt");
+    QVERIFY(basename("/tmp") == "tmp");
+    QVERIFY(basename("/tmp/") == "tmp");
 }
 
-void QtShellTests::find()
+void QtShellTests::test_find()
 {
-    QVERIFY(QtShell::find(".").size() > 0);
-    QVERIFY(QtShell::find(QDir::current().path()).size() > 0);
+    QVERIFY(find(".").size() > 0);
+    QVERIFY(find(QDir::current().path()).size() > 0);
 
-    QVERIFY(QtShell::find("..").size() > 0);
+    QVERIFY(find("..").size() > 0);
 
-    QStringList files = QtShell::find("..", QStringList() << "*.h");
+    QStringList files = find("..", QStringList() << "*.h");
 
     QVERIFY(files.filter(QRegExp("*.h",Qt::CaseInsensitive,QRegExp::Wildcard)).size() == files.size());
 
 }
 
-void QtShellTests::rmdir()
+void QtShellTests::test_rmdir()
 {
     QDir dir("tmp");
     QString tmpPath = dir.absolutePath();;
@@ -44,17 +43,17 @@ void QtShellTests::rmdir()
     dir.mkpath(tmpPath);
 
     QVERIFY(dir.exists());
-    QVERIFY(QtShell::rmdir(tmpPath));
+    QVERIFY(rmdir(tmpPath));
     QVERIFY(!dir.exists());
 
     dir.mkdir(tmpPath);
-    QtShell::touch(tmpPath + "/files.txt");
+    touch(tmpPath + "/files.txt");
 
-    QVERIFY(!QtShell::rmdir(tmpPath));
+    QVERIFY(!rmdir(tmpPath));
     QVERIFY(dir.exists());
 }
 
-void QtShellTests::touch()
+void QtShellTests::test_touch()
 {
     QFileInfo info("tmp.txt");
     if (info.exists()) {
@@ -64,38 +63,38 @@ void QtShellTests::touch()
     info = QFileInfo("tmp.txt");
     QVERIFY(!info.exists());
 
-    QtShell::touch("tmp.txt");
+    touch("tmp.txt");
 
     info = QFileInfo("tmp.txt");
     QVERIFY(info.exists());
 
-    QVERIFY(QtShell::touch("tmp.txt"));
+    QVERIFY(touch("tmp.txt"));
 }
 
-void QtShellTests::rm()
+void QtShellTests::test_rm()
 {
-    QtShell::touch("tmp.txt");
+    touch("tmp.txt");
 
-    QVERIFY(QtShell::rm("tmp.txt"));
+    QVERIFY(rm("tmp.txt"));
 
     QFileInfo info("tmp.txt");
     QVERIFY(!info.exists());
 
-    QtShell::touch("tmp.txt");
-    QVERIFY(QtShell::rm("*.txt"));
+    touch("tmp.txt");
+    QVERIFY(rm("*.txt"));
 
     info = QFileInfo("tmp.txt");
     QVERIFY(!info.exists());
 
-    QtShell::mkdir("tmp");
-    QVERIFY(!QtShell::rm("tmp")); // rm: tmp: is a directory"
+    mkdir("tmp");
+    QVERIFY(!rm("tmp")); // rm: tmp: is a directory"
     QDir dir("tmp");
     QVERIFY(dir.exists());
-    QVERIFY(QtShell::rm("tmp", true));
+    QVERIFY(rm("tmp", true));
     QVERIFY(!dir.exists());
 }
 
-void QtShellTests::mkdir()
+void QtShellTests::test_mkdir()
 {
     QDir dir("tmp");
     if (dir.exists()) {
@@ -103,35 +102,37 @@ void QtShellTests::mkdir()
     }
 
     QVERIFY(!dir.exists());
-    QVERIFY(QtShell::mkdir("tmp"));
+    QVERIFY(mkdir("tmp"));
     QVERIFY(dir.exists());
-    QVERIFY(!QtShell::mkdir("tmp"));
+    QVERIFY(!mkdir("tmp"));
+
+    QVERIFY(find("tmp").size() == 0);
 }
 
-void QtShellTests::cp()
+void QtShellTests::test_cp()
 {
-    QtShell::rm("src", true);
-    QtShell::mkdir("src");
-    QtShell::touch("src/1.txt");
-    QtShell::touch("src/2.text");
-    QtShell::touch("src/3.txt");
-    QtShell::rm("target", true);
-    QtShell::mkdir("target");
+    rm("src", true);
+    mkdir("src");
+    touch("src/1.txt");
+    touch("src/2.text");
+    touch("src/3.txt");
+    rm("target", true);
+    mkdir("target");
 
-    QCOMPARE(QtShell::find("src").size(), 3);
-    QCOMPARE(QtShell::find("target").size(), 0);
+    QCOMPARE(find("src").size(), 3);
+    QCOMPARE(find("target").size(), 0);
 
-    QVERIFY(QtShell::cp("src/*.txt","target"));
-    QCOMPARE(QtShell::find("target").size(), 2);
+    QVERIFY(cp("src/*.txt","target"));
+    QCOMPARE(find("target").size(), 2);
 
-    QtShell::rm("target", true);
-    QtShell::mkdir("target");
+    rm("target", true);
+    mkdir("target");
 
-    QVERIFY(QtShell::cp("src/*","target"));
-    QCOMPARE(QtShell::find("target").size(), 3);
+    QVERIFY(cp("src/*","target"));
+    QCOMPARE(find("target").size(), 3);
 
-    QVERIFY(QtShell::cp(":/*.cpp", "target"));
-    QCOMPARE(QtShell::find("target",QStringList() << "*.cpp").size(), 1);
+    QVERIFY(cp(":/*.cpp", "target"));
+    QCOMPARE(find("target",QStringList() << "*.cpp").size(), 1);
 
 }
 

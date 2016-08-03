@@ -8,18 +8,18 @@ public:
     explicit QtShellTests(QObject *parent = 0);
 
 private slots:
-    void basename();
+    void test_basename();
 
-    void find();
+    void test_find();
 
-    void rmdir();
+    void test_rmdir();
 
-    void touch();
+    void test_touch();
 
-    void rm();
+    void test_rm();
 
-    void mkdir();
+    void test_mkdir();
 
-    void cp();
+    void test_cp();
 };
 
