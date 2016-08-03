@@ -11,5 +11,9 @@ private slots:
     void find();
 
     void rmdir();
+
+    void touch();
+
+    void rm();
 };
 

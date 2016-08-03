@@ -39,6 +39,19 @@ static QStringList filterLocalFiles(const QStringList& files) {
     return result;
 }
 
+static QList<QFileInfo> filterLocalFiles(const QList<QFileInfo>& files) {
+    QList<QFileInfo> result;
+    for (int i = 0 ; i < files.size() ; i++) {
+        QFileInfo file = files[i];
+        if (file.fileName() == "." || file.fileName() == "..") {
+            continue;
+        }
+        result << file;
+    }
+
+    return result;
+}
+
 QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 {
     QDir dir(root);
@@ -144,6 +157,38 @@ bool QtShell::touch(const QString &path)
 
         if (utime(path.toLocal8Bit().constData(), 0) == -1) {
             qWarning() << "utimes failed:" << path;
+            res = false;
+        }
+    }
+
+    return res;
+}
+
+bool QtShell::rm(const QString &file)
+{
+    bool res = true;
+    QString folder = dirname(file);
+    QString filter = basename(file);
+
+    QDir dir(folder);
+
+    QList<QFileInfo> files = dir.entryInfoList(QStringList() << filter);
+    files = filterLocalFiles(files);
+
+    if (files.size() == 0) {
+        qWarning() << QString("rm: %1: No such file or directory").arg(filter);
+        return false;
+    }
+
+    foreach (QFileInfo file, files) {
+        if (file.isDir()) {
+            qWarning() << QString("rm: %1: is a directory").arg(file.fileName());
+            res = false;
+            continue;
+        }
+
+        if (!QFile::remove(file.absoluteFilePath()) ) {
+            qWarning() << QString("rm: %1: can not remove the file").arg(file.fileName());
             res = false;
         }
     }

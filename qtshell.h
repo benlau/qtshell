@@ -15,6 +15,8 @@ namespace QtShell {
 
     bool touch(const QString &path);
 
+    bool rm(const QString& file);
+
 }
 
 #endif // QTSHELL_H

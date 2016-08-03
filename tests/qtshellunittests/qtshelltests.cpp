@@ -46,3 +46,31 @@ void QtShellTests::rmdir()
     QVERIFY(dir.exists());
 }
 
+void QtShellTests::touch()
+{
+    QFileInfo info("tmp.txt");
+    if (info.exists()) {
+        QFile::remove("tmp.txt");
+    }
+
+    info = QFileInfo("tmp.txt");
+    QVERIFY(!info.exists());
+
+    QtShell::touch("tmp.txt");
+
+    info = QFileInfo("tmp.txt");
+    QVERIFY(info.exists());
+
+    QVERIFY(QtShell::touch("tmp.txt"));
+}
+
+void QtShellTests::rm()
+{
+    QtShell::touch("tmp.txt");
+
+    QtShell::rm("tmp.txt");
+
+    QFileInfo info("tmp.txt");
+    QVERIFY(!info.exists());
+}
+
