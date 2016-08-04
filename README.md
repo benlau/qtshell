@@ -28,7 +28,7 @@ dirname
 
     QString QtShell::dirname(const QString& pathname);
 
-Return directory portion of pathname
+Return directory portion of pathname. 
 
 basename
 --------
@@ -73,7 +73,7 @@ Examples:
 
     rm("*.txt"); // Remove all txt files in current path
 
-    rmp("/tmp/dir", true); // Remove a directory
+    rm("/tmp/dir", true); // Remove a directory
 
 mkdir
 -----
@@ -87,7 +87,7 @@ cp
 
     bool cp(const QString& source , const QString &target);
 
-Copy files
+Copy files (recursive is not supported yet)
 
 Examples
 
