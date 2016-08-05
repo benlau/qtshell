@@ -305,7 +305,10 @@ bool QtShell::mkdir(const QString &options, const QString &path)
     return dir.mkpath(path);
 }
 
-static bool _cp(QString source, QString target, bool verbose = false) {
+static bool _cp(QString source, QString target,
+                bool recursive = false,
+                bool verbose = false) {
+
     if (source.isEmpty() || target.isEmpty()) {
         qWarning() << "cp(const QString &source, const QString &target)";
         return false;
@@ -332,10 +335,6 @@ static bool _cp(QString source, QString target, bool verbose = false) {
     QFileInfo targetInfo(target);
 
     foreach (QFileInfo file, files) {
-        if (file.isDir()) {
-            qWarning() << QString("cp: %1 is a directory (not copied)").arg(file.fileName());
-            continue;
-        }
 
         QString targetFile = target;
 
@@ -343,9 +342,29 @@ static bool _cp(QString source, QString target, bool verbose = false) {
             targetFile = target + "/" + file.fileName();
         }
 
+        if (file.isDir()) {
+
+            if (!recursive) {
+                qWarning() << QString("cp: %1 is a directory (not copied)").arg(file.fileName());
+                res = false;
+            } else {
+
+                QtShell::mkdir(targetFile);
+                QDir nextDir(file.absoluteFilePath());
+
+                if (nextDir.entryList().size() > 2) { // except "." && ".."
+                    if (!_cp(file.absoluteFilePath() + "/*", targetFile, recursive, verbose)) {
+                        res = false;
+                    }
+                }
+            }
+            continue;
+        }
+
         if (verbose) {
             qDebug().noquote() << QString("%1 -> %2").arg(file.absoluteFilePath()).arg(targetFile);
         }
+
         if (!QFile::copy(file.absoluteFilePath(), targetFile)) {
             qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
             res = false;
@@ -364,15 +383,18 @@ bool QtShell::cp(const QString& options, const QString& source , const QString &
 
     QCommandLineParser parser;
     parser.addOption(QCommandLineOption("v"));
+    parser.addOption(QCommandLineOption("R"));
+    parser.addOption(QCommandLineOption("a"));
 
     if (!parser.parse(QStringList() << "cp" << options)) {
         qWarning() << QString("cp: %1").arg(parser.errorText());
         return false;
     }
 
+    bool recursive = parser.isSet("R") || parser.isSet("a");
     bool verbose = parser.isSet("v");
 
-    return _cp(source, target, verbose);
+    return _cp(source, target, recursive, verbose);
 
 }
 

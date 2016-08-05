@@ -172,5 +172,18 @@ void QtShellTests::test_cp()
     QVERIFY(cp(":/*.cpp", "target"));
     QCOMPARE(find("target",QStringList() << "*.cpp").size(), 1);
 
+    /* Test -r / -a */
+
+    mkdir("src/a");
+    mkdir("src/b");
+    touch("src/b/b1.txt");
+    touch("src/b/b2.txt");
+    rm("-rf", "target");
+    mkdir("target");
+
+    QVERIFY(cp("-av","src/*","target"));
+
+    QStringList files = find("target");
+    QCOMPARE(files.size(), 8);
 }
 

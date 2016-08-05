@@ -120,3 +120,13 @@ Examples
     cp("*.txt", "/tmp");
 
     cp("/tmp/123.txt", "456.txt");
+
+
+Options
+
+     -a    Same as -R options.
+
+     -R    If source_file designates a directory, cp copies the directory
+           and the entire subtree connected at that point.
+
+     -v    Cause cp to be verbose, showing files as they are copied.
