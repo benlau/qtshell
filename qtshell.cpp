@@ -80,9 +80,23 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
     QDir dir(root);
     QString absRoot = dir.absolutePath();
 
+    QStringList result;
+
+    auto resolve = [=](QString path) {
+        return path.replace(absRoot, root);
+    };
+
+    auto append = [&](QString path) {
+        if (nameFilters.size() > 0 && !match(path, nameFilters)) {
+            return;
+        }
+
+        result << resolve(path);
+    };
+
     QQueue<QString> queue;
     queue.enqueue(absRoot);
-    QStringList result;
+    append(absRoot);
 
     while (queue.size() > 0) {
         QString current = queue.dequeue();
@@ -100,20 +114,11 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 
             if (info.isDir()) {
                 queue.enqueue(absPath);
+                append(absPath);
                 continue;
             }
 
-            QString fileName = info.fileName();
-
-            if (nameFilters.size() > 0 && !match(fileName, nameFilters)) {
-                continue;
-            }
-
-            if (root != absRoot) {
-                absPath.replace(absRoot, root);
-            }
-
-            result << absPath;
+            append(absPath);
         }
     }
 

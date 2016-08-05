@@ -30,12 +30,31 @@ void QtShellTests::test_dirname()
 
 void QtShellTests::test_find()
 {
+    QDir dir;
+    dir.mkdir("tmp");
+
+    touch("tmp/1.txt");
+
+    QStringList files = find("tmp");
+    QCOMPARE(files.size() , 2);
+    QVERIFY(files[0] == "tmp");
+
+    files = find("tmp/");
+
+    QCOMPARE(files.size() , 2);
+    QVERIFY(files[0] == "tmp/");
+
+    files = find("tmp",QStringList() << "*.txt");
+    QCOMPARE(files.size() , 1);
+    QVERIFY(files[0] == "tmp/1.txt");
+
+
     QVERIFY(find(".").size() > 0);
     QVERIFY(find(QDir::current().path()).size() > 0);
 
     QVERIFY(find("..").size() > 0);
 
-    QStringList files = find("..", QStringList() << "*.h");
+    files = find("..", QStringList() << "*.h");
 
     QVERIFY(files.filter(QRegExp("*.h",Qt::CaseInsensitive,QRegExp::Wildcard)).size() == files.size());
 
