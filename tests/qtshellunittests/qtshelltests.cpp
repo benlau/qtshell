@@ -16,7 +16,7 @@ void QtShellTests::test_basename()
 {
     QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
     QVERIFY(QtShell::basename("/tmp") == "tmp");
-    QVERIFY(QtShell::basename("/tmp/") == "tmp");
+    QVERIFY(QtShell::basename("/tmp/") == "");
 }
 
 void QtShellTests::test_dirname()
@@ -100,9 +100,13 @@ void QtShellTests::test_rm()
     QVERIFY(!rm("tmp")); // rm: tmp: is a directory"
     QDir dir("tmp");
     QVERIFY(dir.exists());
-    QVERIFY(rm("-r", "tmp"));
+    QVERIFY(rm("-vr", "tmp"));
     QVERIFY(!dir.exists());
 
+    // Test trailing "/"
+    mkdir("tmp");
+    QVERIFY(rm("-vr","tmp/"));
+    QVERIFY(!dir.exists());
 }
 
 void QtShellTests::test_mkdir()

@@ -129,16 +129,7 @@ QString QtShell::basename(const QString &path)
     QString result = "/";
     QStringList token = path.split("/");
 
-    int i = token.size() -1;
-    while (i >=0) {
-        QString name = token.at(i--);
-        if (!name.isEmpty()) {
-            result = name;
-            break;
-        }
-    }
-
-    return result;
+    return token.last();
 }
 
 bool QtShell::rmdir(const QString &path)
@@ -183,14 +174,20 @@ static bool _rm(const QString &file,
                  bool recursive = false,
                  bool verbose = false)
 {
-    if (file.isEmpty()) {
+    QString path = file;
+
+    if (path.isEmpty()) {
         qWarning() << "rm: it do not accept empty argument";
         return false;
     }
 
+    if (path.lastIndexOf("/") == path.size() - 1) {
+        path.remove(file.size() - 1,1);
+    }
+
     bool res = true;
-    QString folder = QtShell::dirname(file);
-    QString filter = QtShell::basename(file);
+    QString folder = QtShell::dirname(path);
+    QString filter = QtShell::basename(path);
 
     QDir dir(folder);
 
@@ -216,7 +213,7 @@ static bool _rm(const QString &file,
                 res = false;
             } else {
                 QDir dir(file.absoluteFilePath());
-                if (verbose) { qDebug() << file.absoluteFilePath();}
+                if (verbose) { qDebug().noquote() << file.absoluteFilePath();}
                 if (!dir.removeRecursively()) {
                     res = false;
                     qWarning() << QString("rm: %1: can not remove the directory").arg(file.absoluteFilePath());
