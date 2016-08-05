@@ -85,7 +85,7 @@ void QtShellTests::test_rm()
 {
     touch("tmp.txt");
 
-    QVERIFY(rm("tmp.txt"));
+    QVERIFY(rm("-v","tmp.txt"));
 
     QFileInfo info("tmp.txt");
     QVERIFY(!info.exists());
@@ -100,8 +100,9 @@ void QtShellTests::test_rm()
     QVERIFY(!rm("tmp")); // rm: tmp: is a directory"
     QDir dir("tmp");
     QVERIFY(dir.exists());
-    QVERIFY(rm("tmp", true));
+    QVERIFY(rm("-r", "tmp"));
     QVERIFY(!dir.exists());
+
 }
 
 void QtShellTests::test_mkdir()
@@ -121,12 +122,12 @@ void QtShellTests::test_mkdir()
 
 void QtShellTests::test_cp()
 {
-    rm("src", true);
+    rm("-rf", "src");
     mkdir("src");
     touch("src/1.txt");
     touch("src/2.text");
     touch("src/3.txt");
-    rm("target", true);
+    rm("-rf", "target");
     mkdir("target");
 
     QCOMPARE(find("src").size(), 3);
@@ -135,7 +136,7 @@ void QtShellTests::test_cp()
     QVERIFY(cp("src/*.txt","target"));
     QCOMPARE(find("target").size(), 2);
 
-    rm("target", true);
+    rm("-rf", "target");
     mkdir("target");
 
     QVERIFY(cp("src/*","target"));

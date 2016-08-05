@@ -28,7 +28,7 @@ dirname
 
     QString QtShell::dirname(const QString& pathname);
 
-Return directory portion of pathname
+Return directory portion of pathname.
 
 basename
 --------
@@ -61,7 +61,8 @@ The touch utility sets the modification and access times of files.  If any file 
 rm
 --
 
-    bool QtShell::rm(const QString& file,bool recursive = false);
+    bool QtShell::rm(const QString& file);
+    bool QtShell::rm(const QString& options, const QString& file);
 
 Remove directory entries. Preserved paths (all paths defined in QStandPaths will not be removed)
 
@@ -73,7 +74,17 @@ Examples:
 
     rm("*.txt"); // Remove all txt files in current path
 
-    rmp("/tmp/dir", true); // Remove a directory
+    rm("-rf", "/tmp/dir"); // Remove a directory
+
+Options:
+
+    -v          Be verbose when deleting files, showing them as they are removed.
+
+    -r          Equivalent to -R.
+
+    -R          Attempt to remove the file hierarchy rooted in each file argument include directory
+
+    -f          Dummy option. No different will be made.
 
 mkdir
 -----

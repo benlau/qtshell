@@ -15,7 +15,9 @@ namespace QtShell {
 
     bool touch(const QString &path);
 
-    bool rm(const QString& file, bool recursive = false);
+    bool rm(const QString& file);
+
+    bool rm(const QString& options,const QString& file);
 
     bool mkdir(const QString &path);
 

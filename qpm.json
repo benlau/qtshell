@@ -1,6 +1,6 @@
 {
   "name": "com.github.benlau.qtshell",
-  "description": "",
+  "description": "Manipulate files by a shell command style API",
   "author": {
     "name": "Ben Lau",
     "email": "xbenlau@gmail.com"

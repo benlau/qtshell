@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QDir>
 #include <QQueue>
+#include <QCommandLineParser>
 
 #ifdef WIN32
 #include <sys/utime.h>
@@ -178,7 +179,9 @@ bool QtShell::touch(const QString &path)
     return res;
 }
 
-bool QtShell::rm(const QString &file, bool recursive)
+static bool _rm(const QString &file,
+                 bool recursive = false,
+                 bool verbose = false)
 {
     if (file.isEmpty()) {
         qWarning() << "rm: it do not accept empty argument";
@@ -186,8 +189,8 @@ bool QtShell::rm(const QString &file, bool recursive)
     }
 
     bool res = true;
-    QString folder = dirname(file);
-    QString filter = basename(file);
+    QString folder = QtShell::dirname(file);
+    QString filter = QtShell::basename(file);
 
     QDir dir(folder);
 
@@ -213,6 +216,7 @@ bool QtShell::rm(const QString &file, bool recursive)
                 res = false;
             } else {
                 QDir dir(file.absoluteFilePath());
+                if (verbose) { qDebug() << file.absoluteFilePath();}
                 if (!dir.removeRecursively()) {
                     res = false;
                     qWarning() << QString("rm: %1: can not remove the directory").arg(file.absoluteFilePath());
@@ -221,6 +225,7 @@ bool QtShell::rm(const QString &file, bool recursive)
             continue;
         }
 
+        if (verbose) { qDebug().noquote() << file.absoluteFilePath();}
         if (!QFile::remove(file.absoluteFilePath()) ) {
             qWarning() << QString("rm: %1: can not remove the file").arg(file.fileName());
             res = false;
@@ -229,6 +234,31 @@ bool QtShell::rm(const QString &file, bool recursive)
 
     return res;
 }
+
+bool QtShell::rm(const QString &options, const QString &file)
+{
+    QCommandLineParser parser;
+    parser.addOption(QCommandLineOption("v"));
+    parser.addOption(QCommandLineOption("r"));
+    parser.addOption(QCommandLineOption("R"));
+    parser.addOption(QCommandLineOption("f")); // dummy
+
+    if (!parser.parse(QStringList() << "rm" << options)) {
+        qWarning() << QString("rm: %1").arg(parser.errorText());
+        return false;
+    }
+
+    bool recursive = parser.isSet("r") || parser.isSet("R");
+    bool verbose = parser.isSet("v");
+
+    return _rm(file, recursive, verbose);
+}
+
+bool QtShell::rm(const QString &file)
+{
+    return _rm(file);
+}
+
 
 bool QtShell::mkdir(const QString &path)
 {
