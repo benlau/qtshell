@@ -143,7 +143,7 @@ void QtShellTests::test_cp()
     rm("-rf", "target");
     mkdir("target");
 
-    QVERIFY(cp("src/*","target"));
+    QVERIFY(cp("-v", "src/*","target"));
     QCOMPARE(find("target").size(), 3);
 
     QVERIFY(cp(":/*.cpp", "target"));

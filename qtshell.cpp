@@ -11,6 +11,15 @@
 
 #include "qtshell.h"
 
+static QString normalize(QString path) {
+
+    if (path.lastIndexOf("/") == path.size() - 1) {
+        path.remove(path.size() - 1,1);
+    }
+
+    return path;
+}
+
 static bool match(const QString&fileName,const QStringList &nameFilters) {
     bool res = false;
 
@@ -181,9 +190,7 @@ static bool _rm(const QString &file,
         return false;
     }
 
-    if (path.lastIndexOf("/") == path.size() - 1) {
-        path.remove(file.size() - 1,1);
-    }
+    path = normalize(path);
 
     bool res = true;
     QString folder = QtShell::dirname(path);
@@ -269,16 +276,19 @@ bool QtShell::mkdir(const QString &path)
     return dir.mkpath(path);
 }
 
-bool QtShell::cp(const QString &source, const QString &target)
-{
+static bool _cp(QString source, QString target, bool verbose = false) {
     if (source.isEmpty() || target.isEmpty()) {
         qWarning() << "cp(const QString &source, const QString &target)";
         return false;
     }
 
+    source = normalize(source);
+
+    target = normalize(target);
+
     bool res = true;
-    QString folder = dirname(source);
-    QString filter = basename(source);
+    QString folder = QtShell::dirname(source);
+    QString filter = QtShell::basename(source);
 
     QDir dir(folder);
 
@@ -304,6 +314,9 @@ bool QtShell::cp(const QString &source, const QString &target)
             targetFile = target + "/" + file.fileName();
         }
 
+        if (verbose) {
+            qDebug().noquote() << QString("%1 -> %2").arg(file.absoluteFilePath()).arg(targetFile);
+        }
         if (!QFile::copy(file.absoluteFilePath(), targetFile)) {
             qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
             res = false;
@@ -311,4 +324,25 @@ bool QtShell::cp(const QString &source, const QString &target)
     }
 
     return res;
+}
+
+bool QtShell::cp(const QString &source, const QString &target)
+{
+    return _cp(source, target);
+}
+
+bool QtShell::cp(const QString& options, const QString& source , const QString &target) {
+
+    QCommandLineParser parser;
+    parser.addOption(QCommandLineOption("v"));
+
+    if (!parser.parse(QStringList() << "cp" << options)) {
+        qWarning() << QString("cp: %1").arg(parser.errorText());
+        return false;
+    }
+
+    bool verbose = parser.isSet("v");
+
+    return _cp(source, target, verbose);
+
 }
