@@ -98,7 +98,7 @@ cp
 
     bool cp(const QString& source , const QString &target);
 
-Copy files
+Copy files (recursive is not supported yet)
 
 Examples
 
