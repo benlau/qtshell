@@ -30,9 +30,8 @@ void QtShellTests::test_dirname()
 
 void QtShellTests::test_find()
 {
-    QDir dir;
-    dir.mkdir("tmp");
-
+    rm("-rf","tmp");
+    mkdir("tmp");
     touch("tmp/1.txt");
 
     QStringList files = find("tmp");
@@ -131,16 +130,21 @@ void QtShellTests::test_rm()
 void QtShellTests::test_mkdir()
 {
     QDir dir("tmp");
-    if (dir.exists()) {
-        dir.removeRecursively();
-    }
+    rm("-rf", "tmp");
 
     QVERIFY(!dir.exists());
     QVERIFY(mkdir("tmp"));
     QVERIFY(dir.exists());
     QVERIFY(!mkdir("tmp"));
 
-    QVERIFY(find("tmp").size() == 0);
+    QVERIFY(find("tmp").size() == 1);
+
+    QVERIFY(!mkdir("tmp/a/b"));
+    QVERIFY(mkdir("-p", "tmp/a/b"));
+    QVERIFY(find("tmp").size() == 3);
+    QVERIFY(mkdir("-p", "tmp/a/b"));
+    QVERIFY(find("tmp").size() == 3);
+
 }
 
 void QtShellTests::test_cp()
@@ -153,17 +157,17 @@ void QtShellTests::test_cp()
     rm("-rf", "target");
     mkdir("target");
 
-    QCOMPARE(find("src").size(), 3);
-    QCOMPARE(find("target").size(), 0);
+    QCOMPARE(find("src").size(), 4);
+    QCOMPARE(find("target").size(), 1);
 
     QVERIFY(cp("src/*.txt","target"));
-    QCOMPARE(find("target").size(), 2);
+    QCOMPARE(find("target").size(), 3);
 
     rm("-rf", "target");
     mkdir("target");
 
     QVERIFY(cp("-v", "src/*","target"));
-    QCOMPARE(find("target").size(), 3);
+    QCOMPARE(find("target").size(), 4);
 
     QVERIFY(cp(":/*.cpp", "target"));
     QCOMPARE(find("target",QStringList() << "*.cpp").size(), 1);

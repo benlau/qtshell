@@ -278,6 +278,30 @@ bool QtShell::mkdir(const QString &path)
         return false;
     }
 
+    QString folder = dirname(path);
+    QString file = basename(path);
+    dir = QDir(folder);
+
+    return dir.mkdir(file);
+}
+
+bool QtShell::mkdir(const QString &options, const QString &path)
+{
+    QCommandLineParser parser;
+    parser.addOption(QCommandLineOption("p"));
+
+    if (!parser.parse(QStringList() << "mkdir" << options)) {
+        qWarning() << QString("mkdir: %1").arg(parser.errorText());
+        return false;
+    }
+
+    bool p = parser.isSet("p");
+
+    if (!p) {
+        return mkdir(path);
+    }
+
+    QDir dir;
     return dir.mkpath(path);
 }
 
@@ -351,3 +375,5 @@ bool QtShell::cp(const QString& options, const QString& source , const QString &
     return _cp(source, target, verbose);
 
 }
+
+

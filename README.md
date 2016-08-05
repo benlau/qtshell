@@ -90,8 +90,21 @@ mkdir
 -----
 
     bool QtShell::mkdir(const QString &path)
+    bool QtShell::mkdir(const QString &options,const QString &path)
 
-Creates the directory. (-p is applied automatically)
+Creates the directory.
+
+Example
+
+    mkdir("tmp");
+    mkdir("-p", "/tmp/myapp/cache");
+
+Options
+
+    -p  Create intermediate directories as required.  If this option is not specified, the
+    full path prefix of each operand must already exist.  On the other hand, with this
+    option specified, no error will be reported if a directory given as an operand
+    already exists.
 
 cp
 --
