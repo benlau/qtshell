@@ -109,7 +109,8 @@ Options
 cp
 --
 
-    bool cp(const QString& source , const QString &target);
+    bool QtShell::cp(const QString& source , const QString &target);
+    bool QtShell::cp(const QString& options, const QString& source , const QString &target);
 
 Copy files (recursive is not supported yet)
 
@@ -120,6 +121,8 @@ Examples
     cp("*.txt", "/tmp");
 
     cp("/tmp/123.txt", "456.txt");
+
+    cp("-va","src/*", "/tmp");
 
 
 Options
