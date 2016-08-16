@@ -399,3 +399,12 @@ bool QtShell::cp(const QString& options, const QString& source , const QString &
 }
 
 
+QStringList QtShell::find(const QString &path, const QString &nameFilter)
+{
+    QStringList nameFilters;
+    if (!nameFilter.isEmpty()) {
+        nameFilters << nameFilter;
+    }
+
+    return find(path, nameFilters);
+}
