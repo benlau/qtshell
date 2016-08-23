@@ -30,6 +30,7 @@ namespace QtShell {
 
     bool cp(const QString& options, const QString& source , const QString &target);
 
+    QString pwd();
 
 }
 

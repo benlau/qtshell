@@ -408,3 +408,8 @@ QStringList QtShell::find(const QString &path, const QString &nameFilter)
 
     return find(path, nameFilters);
 }
+
+QString QtShell::pwd()
+{
+    return QDir::currentPath();
+}

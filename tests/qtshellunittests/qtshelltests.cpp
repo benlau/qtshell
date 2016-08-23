@@ -186,3 +186,11 @@ void QtShellTests::test_cp()
     QCOMPARE(files.size(), 8);
 }
 
+void QtShellTests::test_pwd()
+{
+
+    QDir dir;
+    QCOMPARE(QtShell::pwd(), dir.absolutePath());
+
+}
+

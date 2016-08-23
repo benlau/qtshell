@@ -23,5 +23,7 @@ private slots:
     void test_mkdir();
 
     void test_cp();
+
+    void test_pwd();
 };
 
