@@ -32,6 +32,7 @@ namespace QtShell {
 
     QString pwd();
 
+    QString cat(const QString& file);
 }
 
 #endif // QTSHELL_H

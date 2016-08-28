@@ -194,3 +194,14 @@ void QtShellTests::test_pwd()
 
 }
 
+void QtShellTests::test_cat()
+{
+    QFile file("cat.txt");
+    QVERIFY(file.open(QIODevice::WriteOnly));
+    file.write("0123456789");
+    file.close();
+
+    QString content = cat("cat.txt");
+    QVERIFY(content == "0123456789");
+}
+

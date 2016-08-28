@@ -413,3 +413,23 @@ QString QtShell::pwd()
 {
     return QDir::currentPath();
 }
+
+QString QtShell::cat(const QString &file)
+{
+    QFileInfo info(file);
+
+    if (!info.exists()) {
+        qWarning() << QString("cat: %1: No such file or directory").arg(file);
+        return "";
+    }
+
+    QFile f(file);
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning() << QString("cat: %1: %2").arg(f.errorString());
+        return "";
+    }
+
+    QByteArray content = f.readAll();
+
+    return content;
+}
