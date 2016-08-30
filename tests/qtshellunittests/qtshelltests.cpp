@@ -203,5 +203,9 @@ void QtShellTests::test_cat()
 
     QString content = cat("cat.txt");
     QVERIFY(content == "0123456789");
+
+    content = cat(QStringList() << "cat.txt" << "cat.txt");
+    QVERIFY(content == "0123456789\n0123456789");
+
 }
 

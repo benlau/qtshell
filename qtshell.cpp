@@ -433,3 +433,17 @@ QString QtShell::cat(const QString &file)
 
     return content;
 }
+
+QString QtShell::cat(const QStringList &files)
+{
+    QString content;
+
+    for (int i = 0 ; i < files.size() ; i++) {
+        if (i != 0) {
+            content = content + "\n";
+        }
+        content = content + cat(files[i]);
+    }
+
+    return content;
+}
