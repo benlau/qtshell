@@ -133,3 +133,17 @@ Options
            and the entire subtree connected at that point.
 
      -v    Cause cp to be verbose, showing files as they are copied.
+
+cat
+---
+
+    QString cat(const QString& file);
+    QString cat(const QStringList& files);
+
+Concatenate and print files
+
+Examples
+
+    QString content = QtShell::cat("input1.txt"); 
+    
+    QString content = QtShell::cat(QStringList() << "input1.txt" << "input2.txt);
