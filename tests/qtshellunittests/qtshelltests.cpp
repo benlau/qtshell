@@ -186,6 +186,27 @@ void QtShellTests::test_cp()
     QCOMPARE(files.size(), 8);
 }
 
+void QtShellTests::test_cp_overwrite()
+{
+    rm("-rf", "src");
+    mkdir("src");
+    touch("src/1.txt");
+    touch("src/2.text");
+    touch("src/3.txt");
+    rm("-rf", "target");
+    mkdir("target");
+
+    QCOMPARE(find("src").size(), 4);
+    QCOMPARE(find("target").size(), 1);
+
+    QVERIFY(cp("src/*.txt","target"));
+    QCOMPARE(find("target").size(), 3);
+
+    QVERIFY(cp("src/*.txt","target"));
+
+
+}
+
 void QtShellTests::test_pwd()
 {
 

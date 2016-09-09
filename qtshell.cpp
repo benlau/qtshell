@@ -365,6 +365,13 @@ static bool _cp(QString source, QString target,
             qDebug().noquote() << QString("%1 -> %2").arg(file.absoluteFilePath()).arg(targetFile);
         }
 
+        if (QFile::exists(targetFile)) {
+            if (!QFile::remove(targetFile)) {
+                qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(file.fileName()).arg(target);
+                return res;
+            }
+        }
+
         if (!QFile::copy(file.absoluteFilePath(), targetFile)) {
             qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
             res = false;
