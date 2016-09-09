@@ -41,8 +41,18 @@ find
 ----
 
     QStringList QtShell::find(const QString& path, const QStringList& nameFilters = QStringList());
+    QStringList QtShell::find(const QString& path, const QString& filter);
 
-walk a file hierarchy
+Walk a file hierarchy
+
+Examples
+
+    find("/tmp");
+
+    find("/tmp", QStringList() << "*.jpg" << "*.png");
+    
+    find("/tmp", "*.txt");
+
 
 rmdir
 -----
