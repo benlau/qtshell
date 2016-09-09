@@ -368,7 +368,8 @@ static bool _cp(QString source, QString target,
         if (QFile::exists(targetFile)) {
             if (!QFile::remove(targetFile)) {
                 qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(file.fileName()).arg(target);
-                return res;
+                res = false;
+                continue;
             }
         }
 
