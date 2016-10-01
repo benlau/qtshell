@@ -58,6 +58,17 @@ void QtShellTests::test_find()
 
 }
 
+void QtShellTests::test_find_verify_filters()
+{
+    mkdir("-p", "findTestCases");
+    touch("findTestCases/a1.txt");
+    touch("findTestCases/b2.txt");
+    touch("findTestCases/c3.md");
+
+    QCOMPARE(find("findTestCases", "*.txt").size(), 2);
+    QCOMPARE(find("findTestCases", "a*.txt").size(), 1);
+}
+
 void QtShellTests::test_rmdir()
 {
     QDir dir("tmp");

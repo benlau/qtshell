@@ -20,21 +20,6 @@ static QString normalize(QString path) {
     return path;
 }
 
-static bool match(const QString&fileName,const QStringList &nameFilters) {
-    bool res = false;
-
-    for (int i = 0 ; i < nameFilters.size() ; i++) {
-        const QString& filter = nameFilters.at(i);
-        QRegExp rx(filter,Qt::CaseInsensitive,QRegExp::Wildcard);
-        if (rx.exactMatch(fileName))  {
-            res = true;
-            break;
-        }
-    }
-
-    return res;
-}
-
 /// Take out "." and ".." files
 static QStringList filterLocalFiles(const QStringList& files) {
     QStringList result;
@@ -86,17 +71,32 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
         return path.replace(absRoot, root);
     };
 
-    auto append = [&](QString path) {
-        if (nameFilters.size() > 0 && !match(path, nameFilters)) {
+    auto match = [](const QString&fileName,const QStringList &nameFilters) {
+        bool res = false;
+
+        for (int i = 0 ; i < nameFilters.size() ; i++) {
+            const QString& filter = nameFilters.at(i);
+            QRegExp rx(filter,Qt::CaseInsensitive,QRegExp::Wildcard);
+            if (rx.exactMatch(fileName))  {
+                res = true;
+                break;
+            }
+        }
+
+        return res;
+    };
+
+    auto append = [&](const QString& absPath, const QString& fileName) {
+        if (nameFilters.size() > 0 && !match(fileName, nameFilters)) {
             return;
         }
 
-        result << resolve(path);
+        result << resolve(absPath);
     };
 
     QQueue<QString> queue;
     queue.enqueue(absRoot);
-    append(absRoot);
+    append(absRoot, "");
 
     while (queue.size() > 0) {
         QString current = queue.dequeue();
@@ -114,11 +114,11 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 
             if (info.isDir()) {
                 queue.enqueue(absPath);
-                append(absPath);
+                append(absPath, info.fileName());
                 continue;
             }
 
-            append(absPath);
+            append(absPath, info.fileName());
         }
     }
 

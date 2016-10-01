@@ -14,6 +14,8 @@ private slots:
 
     void test_find();
 
+    void test_find_verify_filters();
+
     void test_rmdir();
 
     void test_touch();
