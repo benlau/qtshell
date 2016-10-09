@@ -174,8 +174,9 @@ bool QtShell::touch(const QString &path)
         file.close();
 
     } else {
+        QByteArray bytes = path.toUtf8();
 
-        if (utime(path.toLocal8Bit().constData(), 0) == -1) {
+        if (utime(bytes.constData(), 0) == -1) {
             qWarning() << "utimes failed:" << path;
             res = false;
         }
