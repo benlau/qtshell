@@ -109,7 +109,7 @@ void QtShellTests::test_touch()
     QVERIFY(touch("tmp.txt"));
 
     /* Test UTF-8 file */
-    QString fileName = "UTF8文字チャー.txt";
+    QString fileName = "UTF8文字チャー.data";
     if (QFile::exists(fileName)) {
         rm("-f",fileName);
     }
