@@ -1,11 +1,12 @@
 #include <QString>
 #include <QtTest>
-#include <execinfo.h>
 #include <signal.h>
-#include <unistd.h>
 #include <TestRunner>
 #include "qtshelltests.h"
 
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+#include <execinfo.h>
+#include <unistd.h>
 void handleBacktrace(int sig) {
   void *array[100];
   size_t size;
@@ -18,10 +19,13 @@ void handleBacktrace(int sig) {
   backtrace_symbols_fd(array, size, STDERR_FILENO);
   exit(1);
 }
+#endif
 
 int main(int argc, char *argv[])
 {
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
     signal(SIGSEGV, handleBacktrace);
+#endif
 
     QGuiApplication app(argc, argv);
 
