@@ -143,6 +143,8 @@ void QtShellTests::test_rm()
     mkdir("tmp");
     QVERIFY(rm("-vr","tmp/"));
     QVERIFY(!dir.exists());
+
+    QVERIFY(rm("-f", "a-file-not-existed"));
 }
 
 void QtShellTests::test_mkdir()

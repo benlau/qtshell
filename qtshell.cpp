@@ -187,7 +187,8 @@ bool QtShell::touch(const QString &path)
 
 static bool _rm(const QString &file,
                  bool recursive = false,
-                 bool verbose = false)
+                 bool verbose = false,
+                 bool force = false)
 {
     QString path = file;
 
@@ -210,8 +211,13 @@ static bool _rm(const QString &file,
     files = filterLocalFiles(files);
 
     if (files.size() == 0) {
-        qWarning() << QString("rm: %1: No such file or directory").arg(filter);
-        return false;
+        if (!force) {
+            qWarning() << QString("rm: %1: No such file or directory").arg(filter);
+            return false;
+        }
+
+        // If force is true, remove a non existed files is not a problem
+        return true;
     }
 
     foreach (QFileInfo file, files) {
@@ -260,8 +266,9 @@ bool QtShell::rm(const QString &options, const QString &file)
 
     bool recursive = parser.isSet("r") || parser.isSet("R");
     bool verbose = parser.isSet("v");
+    bool force = parser.isSet("f");
 
-    return _rm(file, recursive, verbose);
+    return _rm(file, recursive, verbose, force);
 }
 
 bool QtShell::rm(const QString &file)
