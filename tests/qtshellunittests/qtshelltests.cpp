@@ -14,15 +14,16 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 
 void QtShellTests::test_basename()
 {
-    QVERIFY(basename("/tmp.txt") == "tmp.txt");
-    QVERIFY(basename("/tmp") == "tmp");
-    QVERIFY(basename("/tmp/") == "tmp");
+    // Use QtShell namespace to avoid mix up with the basename in libgen.h
+    QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
+    QVERIFY(QtShell::basename("/tmp") == "tmp");
+    QVERIFY(QtShell::basename("/tmp/") == "tmp");
 
-    QVERIFY(basename("/") == "");
-    QVERIFY(basename("//") == "");
-    QVERIFY(basename("tmp.txt") == "tmp.txt");
-    QVERIFY(basename("A file not existed") == "A file not existed");
-    QVERIFY(basename("//tmp/tmp.txt") == "tmp.txt");
+    QVERIFY(QtShell::basename("/") == "");
+    QVERIFY(QtShell::basename("//") == "");
+    QVERIFY(QtShell::basename("tmp.txt") == "tmp.txt");
+    QVERIFY(QtShell::basename("A file not existed") == "A file not existed");
+    QVERIFY(QtShell::basename("//tmp/tmp.txt") == "tmp.txt");
 }
 
 void QtShellTests::test_dirname()
