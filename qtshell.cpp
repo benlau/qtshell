@@ -127,15 +127,23 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 
 QString QtShell::dirname(const QString &path)
 {
-    QFileInfo info(path);
-    QString parent = info.absolutePath();
-    if (parent.isEmpty()) {
-       parent = "/";
+    // Don't use QFileInfo.absolutePath() since it return absolute path.
+    // The behaviour is different Unix's dirname command
+    QStringList token = path.split("/");
+    QString result = "/";
+
+    if (token.size() == 1) {
+        result = ".";
+    } else {
+        token.takeLast();
+        result = token.join("/");
     }
 
-    // No tailing "/" for dirname command
+    if (result.isEmpty()) {
+        result = "/";
+    }
 
-    return parent;
+    return result;
 }
 
 QString QtShell::basename(const QString &path)

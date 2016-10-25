@@ -14,17 +14,28 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 
 void QtShellTests::test_basename()
 {
-    QVERIFY(QtShell::basename("/tmp.txt") == "tmp.txt");
-    QVERIFY(QtShell::basename("/tmp") == "tmp");
-    QVERIFY(QtShell::basename("/tmp/") == "");
+    QVERIFY(basename("/tmp.txt") == "tmp.txt");
+    QVERIFY(basename("/tmp") == "tmp");
+    QVERIFY(basename("/tmp/") == "");
+
+    QVERIFY(basename("/") == "");
+    QVERIFY(basename("//") == "");
+    QVERIFY(basename("tmp.txt") == "tmp.txt");
+    QVERIFY(basename("A file not existed") == "A file not existed");
+    QVERIFY(basename("//tmp/tmp.txt") == "tmp.txt");
 }
 
 void QtShellTests::test_dirname()
 {
     QVERIFY(dirname("/tmp.txt") == "/");
+    QVERIFY(dirname("/tmp") == "/");
+
     QVERIFY(dirname("/") == "/");
-    QVERIFY(dirname("tmp.txt") == QDir::currentPath());
-    QVERIFY(dirname("A file not existed") == QDir::currentPath());
+    QVERIFY(dirname("//") == "/");
+
+    QVERIFY(dirname("tmp.txt") == ".");
+    QVERIFY(dirname("A file not existed") == ".");
+    QVERIFY(dirname("//tmp/tmp.txt") == "//tmp");
 }
 
 void QtShellTests::test_find()
