@@ -135,7 +135,7 @@ QString QtShell::dirname(const QString &path)
     if (token.size() == 1) {
         result = ".";
     } else {
-        token.takeLast();
+        token.removeLast();
         result = token.join("/");
     }
 
@@ -148,8 +148,11 @@ QString QtShell::dirname(const QString &path)
 
 QString QtShell::basename(const QString &path)
 {
-    QString result = "/";
     QStringList token = path.split("/");
+
+    if (path[path.size() - 1] == QChar('/')) {
+        token.removeLast();
+    }
 
     return token.last();
 }
