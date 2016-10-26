@@ -19,8 +19,8 @@ void QtShellTests::test_basename()
     QVERIFY(QtShell::basename("/tmp") == "tmp");
     QVERIFY(QtShell::basename("/tmp/") == "tmp");
 
-    QVERIFY(QtShell::basename("/") == "");
-    QVERIFY(QtShell::basename("//") == "");
+    QVERIFY(QtShell::basename("/") == "/");
+    QVERIFY(QtShell::basename("//") == "/");
     QVERIFY(QtShell::basename("tmp.txt") == "tmp.txt");
     QVERIFY(QtShell::basename("A file not existed") == "A file not existed");
     QVERIFY(QtShell::basename("//tmp/tmp.txt") == "tmp.txt");
@@ -37,6 +37,27 @@ void QtShellTests::test_dirname()
     QVERIFY(dirname("tmp.txt") == ".");
     QVERIFY(dirname("A file not existed") == ".");
     QVERIFY(dirname("//tmp/tmp.txt") == "//tmp");
+}
+
+void QtShellTests::test_basenameAndDirname()
+{
+    QFETCH(QString, path);
+    QFETCH(QString, d);
+    QFETCH(QString, b);
+
+    QVERIFY(QtShell::dirname(path) == d);
+    QVERIFY(QtShell::basename(path) == b);
+}
+
+void QtShellTests::test_basenameAndDirname_data()
+{
+    QTest::addColumn<QString>("path");
+    QTest::addColumn<QString>("d");
+    QTest::addColumn<QString>("b");
+
+    QTest::newRow("/tmp//") << "/tmp//" << "/" << "tmp";
+    QTest::newRow("///") << "///" << "/" << "/";
+    QTest::newRow(" ") << " " << "." << " ";
 }
 
 void QtShellTests::test_find()

@@ -11,12 +11,14 @@
 
 #include "qtshell.h"
 
+/// Remove tailing "/" from a path.
 static QString normalize(QString path) {
 
-    if (path.lastIndexOf("/") == path.size() - 1) {
-        path.remove(path.size() - 1,1);
+    if (path.count("/") == path.size()) {
+        return "/";
     }
 
+    path.remove(QRegExp("\/*$"));
     return path;
 }
 
@@ -125,10 +127,12 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
     return result;
 }
 
-QString QtShell::dirname(const QString &path)
+QString QtShell::dirname(const QString &input)
 {
     // Don't use QFileInfo.absolutePath() since it return absolute path.
     // The behaviour is different Unix's dirname command
+
+    QString path = normalize(input);
     QStringList token = path.split("/");
     QString result = "/";
 
@@ -146,8 +150,15 @@ QString QtShell::dirname(const QString &path)
     return result;
 }
 
-QString QtShell::basename(const QString &path)
+QString QtShell::basename(const QString &input)
 {
+    QString path = normalize(input);
+
+    if (path == "/") {
+        // Special case
+        return "/";
+    }
+
     QStringList token = path.split("/");
 
     if (path[path.size() - 1] == QChar('/')) {

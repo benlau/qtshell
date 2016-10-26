@@ -12,6 +12,9 @@ private slots:
 
     void test_dirname();
 
+    void test_basenameAndDirname();
+    void test_basenameAndDirname_data();
+
     void test_find();
 
     void test_find_verify_filters();
