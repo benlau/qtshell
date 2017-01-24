@@ -138,6 +138,8 @@ Copy files (recursive is not supported yet)
 
 Examples
 
+    cp("-a", ":/*", "/target"); // copy all files from qrc resource to target path recursively
+
     cp("tmp.txt", "/tmp");
 
     cp("*.txt", "/tmp");
