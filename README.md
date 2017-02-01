@@ -12,7 +12,13 @@ Example Usages
 QtShell::cp("-a", ":/resources", targetPath);
 ```
 
-2) Read all from a file
+2) Create a file without any content 
+
+```
+QtShell::touch(timestampFile);
+```
+
+3) Read all from a file
 
 ```
 QString content = QtShell::cat(input);
