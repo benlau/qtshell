@@ -12,10 +12,10 @@ Example Usages
 QtShell::cp("-a", ":/resources", targetPath);
 ```
 
-2) Create a file without any content 
+2) Create a lock file  
 
 ```
-QtShell::touch(timestampFile);
+QtShell::touch(lockFile);
 ```
 
 3) Read all from a file
