@@ -3,13 +3,19 @@ QtShell - Manipulate files by a shell command style API
 
 QtShell is a Qt library that provides a set of file manipulation API in shell command style.
 
-Use Cases
+Example Usages
 ---------
 
 1) Copy files from qrc to a directory recursively
 
 ```
-QtShell::cp("-a", ":/resources", target);
+QtShell::cp("-a", ":/resources", targetPath);
+```
+
+2) Read all from a file
+
+```
+QString content = QtShell::cat(input);
 ```
 
 
