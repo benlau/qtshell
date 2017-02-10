@@ -31,6 +31,8 @@ private slots:
 
     void test_cp_overwrite();
 
+    void test_cp_recursive();
+
     void test_pwd();
 
     void test_cat();

@@ -261,6 +261,22 @@ void QtShellTests::test_cp_overwrite()
 
 }
 
+void QtShellTests::test_cp_recursive()
+{
+    rm("-rf", "src");
+    mkdir("-p","src/1");
+    mkdir("-p","src/2");
+    touch("src/1/1.txt");
+    touch("src/2/1.txt");
+    touch("src/2/2.txt");
+
+    rm("-rf", "target");
+    mkdir("target");
+
+    QVERIFY(cp("-a", "src/*","target"));
+    QCOMPARE(find("target","*.txt").size(), 3);
+}
+
 void QtShellTests::test_pwd()
 {
 
