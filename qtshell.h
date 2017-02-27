@@ -28,7 +28,11 @@ namespace QtShell {
 
     bool cp(const QString& source , const QString &target);
 
+    bool cp(const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
+
     bool cp(const QString& options, const QString& source , const QString &target);
+
+    bool cp(const QString& options, const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
 
     QString pwd();
 

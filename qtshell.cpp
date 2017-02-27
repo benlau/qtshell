@@ -335,7 +335,10 @@ bool QtShell::mkdir(const QString &options, const QString &path)
     return dir.mkpath(path);
 }
 
-static bool _cp(QString source, QString target,
+// The real cp function
+static bool _cp(QString source,
+                QString target,
+                QList<QPair<QString,QString> > &log,
                 bool recursive = false,
                 bool verbose = false) {
 
@@ -366,10 +369,11 @@ static bool _cp(QString source, QString target,
 
     foreach (QFileInfo file, files) {
 
-        QString targetFile = target;
+        QString dst = target;
+        QString src = file.absoluteFilePath();
 
         if (targetInfo.isDir()) {
-            targetFile = target + "/" + file.fileName();
+            dst = target + "/" + file.fileName();
         }
 
         if (file.isDir()) {
@@ -379,11 +383,12 @@ static bool _cp(QString source, QString target,
                 res = false;
             } else {
 
-                QtShell::mkdir(targetFile);
-                QDir nextDir(file.absoluteFilePath());
+                QtShell::mkdir(dst);
+                QDir nextDir(src);
 
                 if (nextDir.entryList().size() > 2) { // except "." && ".."
-                    if (!_cp(file.absoluteFilePath() + "/*", targetFile, recursive, verbose)) {
+                    if (!_cp(file.absoluteFilePath() + "/*",
+                             dst, log, recursive, verbose)) {
                         res = false;
                     }
                 }
@@ -392,20 +397,24 @@ static bool _cp(QString source, QString target,
         }
 
         if (verbose) {
-            qDebug().noquote() << QString("%1 -> %2").arg(file.absoluteFilePath()).arg(targetFile);
+            qDebug().noquote() << QString("%1 -> %2").arg(src).arg(dst);
         }
 
-        if (QFile::exists(targetFile)) {
-            if (!QFile::remove(targetFile)) {
+        if (QFile::exists(dst)) {
+            if (!QFile::remove(dst)) {
                 qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(file.fileName()).arg(target);
                 res = false;
                 continue;
             }
         }
 
-        if (!QFile::copy(file.absoluteFilePath(), targetFile)) {
+        if (!QFile::copy(src, dst)) {
             qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
             res = false;
+        }
+
+        if (res) {
+            log << QPair<QString,QString>(src, dst);
         }
     }
 
@@ -414,11 +423,23 @@ static bool _cp(QString source, QString target,
 
 bool QtShell::cp(const QString &source, const QString &target)
 {
-    return _cp(source, target);
+    QList<QPair<QString, QString> > log;
+
+    return _cp(source, target, log);
+}
+
+bool QtShell::cp(const QString &source, const QString &target, QList<QPair<QString, QString> > &log)
+{
+    return _cp(source, target, log);
 }
 
 bool QtShell::cp(const QString& options, const QString& source , const QString &target) {
+    QList<QPair<QString, QString> > log;
+    return cp(options, source, target, log);
+}
 
+bool QtShell::cp(const QString &options, const QString &source, const QString &target, QList<QPair<QString, QString> > &log)
+{
     QCommandLineParser parser;
     parser.addOption(QCommandLineOption("v"));
     parser.addOption(QCommandLineOption("R"));
@@ -432,7 +453,7 @@ bool QtShell::cp(const QString& options, const QString& source , const QString &
     bool recursive = parser.isSet("R") || parser.isSet("a");
     bool verbose = parser.isSet("v");
 
-    return _cp(source, target, recursive, verbose);
+    return _cp(source, target, log, recursive, verbose);
 
 }
 

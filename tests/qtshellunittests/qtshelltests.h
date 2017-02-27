@@ -33,6 +33,8 @@ private slots:
 
     void test_cp_recursive();
 
+    void test_cp_log();
+
     void test_pwd();
 
     void test_cat();
