@@ -355,6 +355,7 @@ static bool _cp(QString source,
     QString folder = QtShell::dirname(source);
     QString filter = QtShell::basename(source);
 
+
     QDir dir(folder);
 
     QList<QFileInfo> files = dir.entryInfoList(QStringList() << filter);
@@ -369,11 +370,15 @@ static bool _cp(QString source,
 
     foreach (QFileInfo file, files) {
 
-        QString dst = target;
-        QString src = file.absoluteFilePath();
+        QString to = target;
+        QString from = file.fileName();
+
+        if (!folder.isEmpty()) {
+            from = folder + "/" + from;
+        }
 
         if (targetInfo.isDir()) {
-            dst = target + "/" + file.fileName();
+            to = target + "/" + file.fileName();
         }
 
         if (file.isDir()) {
@@ -383,12 +388,12 @@ static bool _cp(QString source,
                 res = false;
             } else {
 
-                QtShell::mkdir(dst);
-                QDir nextDir(src);
+                QtShell::mkdir(to);
+                QDir nextDir(from);
 
                 if (nextDir.entryList().size() > 2) { // except "." && ".."
-                    if (!_cp(file.absoluteFilePath() + "/*",
-                             dst, log, recursive, verbose)) {
+                    if (!_cp(from + "/*",
+                             to, log, recursive, verbose)) {
                         res = false;
                     }
                 }
@@ -397,24 +402,24 @@ static bool _cp(QString source,
         }
 
         if (verbose) {
-            qDebug().noquote() << QString("%1 -> %2").arg(src).arg(dst);
+            qDebug().noquote() << QString("%1 -> %2").arg(from).arg(to);
         }
 
-        if (QFile::exists(dst)) {
-            if (!QFile::remove(dst)) {
+        if (QFile::exists(to)) {
+            if (!QFile::remove(to)) {
                 qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(file.fileName()).arg(target);
                 res = false;
                 continue;
             }
         }
 
-        if (!QFile::copy(src, dst)) {
+        if (!QFile::copy(from, to)) {
             qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
             res = false;
         }
 
         if (res) {
-            log << QPair<QString,QString>(src, dst);
+            log << QPair<QString,QString>(from, to);
         }
     }
 

@@ -296,11 +296,10 @@ void QtShellTests::test_cp_log()
     QList<QPair<QString,QString> > log;
     QVERIFY(cp("-a", "src/*","target", log));
     QCOMPARE(log.size(), 3);
-    qDebug() << log;
 
     QPair<QString,QString> record = log.first();
+    QVERIFY(record.first == "src/1/1.txt");
     QVERIFY(record.second == "target/1/1.txt");
-    //@TODO record.first should not be an absolute path
 }
 
 void QtShellTests::test_pwd()
