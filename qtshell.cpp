@@ -339,59 +339,25 @@ static bool _cp(QString source,
         return false;
     }
 
-    source = normalize(source);
+    int code = bulk(source, target, [&](const QString& from , const QString& to, const QFileInfo& fromInfo) {
+        bool res = true;
 
-    target = normalize(target);
-
-    bool res = true;
-    QString folder = QtShell::dirname(source);
-    QString filter = QtShell::basename(source);
-
-
-    QDir dir(folder);
-
-    QList<QFileInfo> files = dir.entryInfoList(QStringList() << filter);
-    files = filterLocalFiles(files);
-
-    if (files.size() == 0) {
-        qWarning() << QString("cp: %1: No such file or directory").arg(filter);
-        return false;
-    }
-
-    QFileInfo targetInfo(target);
-
-    foreach (QFileInfo file, files) {
-
-        QString to = target;
-        QString from = file.fileName();
-
-        if (!folder.isEmpty()) {
-            from = folder + "/" + from;
-        }
-
-        if (targetInfo.isDir()) {
-            to = target + "/" + file.fileName();
-        }
-
-        if (file.isDir()) {
-
+        if (fromInfo.isDir()) {
             if (!recursive) {
-                qWarning() << QString("cp: %1 is a directory (not copied)").arg(file.fileName());
+                qWarning() << QString("cp: %1 is a directory (not copied)").arg(from);
                 res = false;
             } else {
-
                 QtShell::mkdir(to);
                 QDir nextDir(from);
 
                 if (nextDir.entryList().size() > 2) { // except "." && ".."
-                    if (!_cp(from + "/*",
-                             to, log, recursive, verbose)) {
-                        res = false;
-                    }
+                    res = _cp(from + "/*",
+                              to, log, recursive, verbose);
                 }
             }
-            continue;
+            return res;
         }
+
 
         if (verbose) {
             qDebug().noquote() << QString("%1 -> %2").arg(from).arg(to);
@@ -399,23 +365,33 @@ static bool _cp(QString source,
 
         if (QFile::exists(to)) {
             if (!QFile::remove(to)) {
-                qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(file.fileName()).arg(target);
-                res = false;
-                continue;
+                qWarning() << QString("cp: %1: Failed to overwrite to %2").arg(from).arg(to);
+                return false;
             }
         }
 
         if (!QFile::copy(from, to)) {
-            qWarning() << QString("cp: %1: Failed to copy to %2").arg(file.fileName()).arg(target);
+            qWarning() << QString("cp: %1: Failed to copy to %2").arg(from).arg(to);
             res = false;
         }
 
         if (res) {
             log << QPair<QString,QString>(from, to);
         }
+
+        return res;
+    });
+
+    switch (code) {
+    case NO_SUCH_FILE_OR_DIR:
+        qWarning() << QString("cp: %1: No such file or directory").arg(source);
+        break;
+    case INVALID_TARGET:
+        qWarning() << QString("cp: %1 %2: Invalid target").arg(source).arg(target);
+        break;
     }
 
-    return res;
+    return code == NO_ERROR;
 }
 
 bool QtShell::cp(const QString &source, const QString &target)

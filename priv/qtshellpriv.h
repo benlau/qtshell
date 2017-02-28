@@ -16,20 +16,27 @@ namespace QtShell {
         typedef enum {
             NO_ERROR = 0,
             INVALID_TARGET = -1,
-            NO_SUCH_FILE_OR_DIR = -2
+            NO_SUCH_FILE_OR_DIR = -2,
+            UNEXCEPTED_ERROR = -3
         } BulkError ;
 
         // Process a bulk list of files from source to target
         template <typename P>
         int bulk(const QString& source, const QString& target, P predicate) {
-            QString folder = QtShell::dirname(source);
-            QString filter = QtShell::basename(source);
+
+            QString s = normalize(source);
+            QString t = normalize(target);
+
+            QString folder = QtShell::dirname(s);
+            QString filter = QtShell::basename(s);
 
             QDir sourceDir(folder);
             QList<QFileInfo> files = sourceDir.entryInfoList(QStringList() << filter,
                                                        QDir::AllEntries | QDir::NoDot | QDir::NoDotDot);
 
-            QFileInfo targetInfo(target);
+            QFileInfo targetInfo(t);
+
+            bool unexceptedError = false;
 
             if (files.size() >= 1 && !targetInfo.isDir()) {
                 return INVALID_TARGET;
@@ -40,7 +47,7 @@ namespace QtShell {
             }
 
             foreach (QFileInfo file, files) {
-                QString to = target;
+                QString to = t;
                 QString from = file.fileName();
 
                 if (!folder.isEmpty()) {
@@ -48,13 +55,14 @@ namespace QtShell {
                 }
 
                 if (targetInfo.isDir()) {
-                    to = target + "/" + file.fileName();
+                    to = t + "/" + file.fileName();
                 }
 
-                bool cont = predicate(from, to, file);
-                if (!cont) {
-                    break;
-                }
+                unexceptedError = !predicate(from, to, file) || unexceptedError;
+            }
+
+            if (unexceptedError) {
+                return UNEXCEPTED_ERROR;
             }
 
             return NO_ERROR;
