@@ -23,6 +23,36 @@ void QtShellTests::test_normalize()
     QVERIFY(normalize("/tmp/") == "/tmp");
 }
 
+void QtShellTests::test_bulk()
+{
+    QList<QPair<QString,QString> > log;
+
+    auto predicate = [&](const QString& from , const QString& to, const QFileInfo& fromInfo) {
+        Q_UNUSED(fromInfo);
+        log << QPair<QString,QString>(from, to);
+        return true;
+    };
+
+    QtShell::rm("-rf", "src");
+    mkdir("-p","src/1");
+    mkdir("-p","src/2");
+    mkdir("-p","target");
+    touch("src/1/1.txt");
+    touch("src/2/1.txt");
+    touch("src/2/2.txt");
+
+    QVERIFY(bulk("src/*", "target", predicate) == NO_ERROR);
+    QCOMPARE(log.size(), 2);
+    QVERIFY(log[0].first == "src/1");
+    QVERIFY(log[0].second == "target/1");
+
+    log.clear();
+    QVERIFY(bulk("src/3", "target", predicate) == NO_SUCH_FILE_OR_DIR);
+
+    QCOMPARE((int) bulk("src/*", "target/1.txt", predicate),(int) INVALID_TARGET);
+
+}
+
 void QtShellTests::test_basename()
 {
     // Use QtShell namespace to avoid mix up with the basename in libgen.h
