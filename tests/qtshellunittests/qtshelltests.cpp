@@ -4,8 +4,10 @@
 #include <QDir>
 #include "qtshelltests.h"
 #include "qtshell.h"
+#include "priv/qtshellpriv.h"
 
 using namespace QtShell;
+using namespace QtShell::Private;
 
 QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
 {
@@ -13,6 +15,12 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
         QTest::qExec(this, 0, 0); // Autotest detect available test cases of a QObject by looking for "QTest::qExec" in source code
     };
     Q_UNUSED(ref);
+}
+
+void QtShellTests::test_normalize()
+{
+    QVERIFY(normalize("/tmp") == "/tmp");
+    QVERIFY(normalize("/tmp/") == "/tmp");
 }
 
 void QtShellTests::test_basename()

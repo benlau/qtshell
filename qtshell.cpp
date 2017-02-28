@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QQueue>
 #include <QCommandLineParser>
+#include "priv/qtshellpriv.h"
 
 #ifdef WIN32
 #include <sys/utime.h>
@@ -11,16 +12,7 @@
 
 #include "qtshell.h"
 
-/// Remove tailing "/" from a path.
-static QString normalize(QString path) {
-
-    if (path.count("/") == path.size()) {
-        return "/";
-    }
-
-    path.remove(QRegExp("\/*$"));
-    return path;
-}
+using namespace QtShell::Private;
 
 /// Take out "." and ".." files
 static QStringList filterLocalFiles(const QStringList& files) {

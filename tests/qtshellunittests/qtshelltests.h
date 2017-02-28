@@ -8,11 +8,14 @@ public:
     explicit QtShellTests(QObject *parent = 0);
 
 private slots:
+    void test_normalize();
+
     void test_basename();
 
     void test_dirname();
 
     void test_basenameAndDirname();
+
     void test_basenameAndDirname_data();
 
     void test_find();
