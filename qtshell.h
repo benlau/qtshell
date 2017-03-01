@@ -2,6 +2,7 @@
 #define QTSHELL_H
 
 #include <QStringList>
+#include <QPair>
 
 namespace QtShell {
 
