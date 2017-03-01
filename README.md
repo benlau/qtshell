@@ -146,7 +146,7 @@ cp
     bool QtShell::cp(const QString& source , const QString &target);
     bool QtShell::cp(const QString& options, const QString& source , const QString &target);
 
-Copy files (recursive is not supported yet)
+Copy files
 
 Examples
 
