@@ -51,6 +51,7 @@ void QtShellTests::test_bulk()
 
     QCOMPARE((int) bulk("src/*", "target/1.txt", predicate),(int) INVALID_TARGET);
 
+    QCOMPARE((int) bulk("src/1/1.txt", "target/1.txt", predicate),(int) NO_ERROR);
 }
 
 void QtShellTests::test_basename()
