@@ -364,3 +364,25 @@ void QtShellTests::test_cat()
 
 }
 
+void QtShellTests::test_mv()
+{
+    QtShell::rm("-rf", "src");
+    QtShell::rm("-rf", "target");
+    mkdir("-p","src/1");
+    mkdir("-p","src/2");
+    mkdir("-p","target");
+    touch("src/1/1.txt");
+    touch("src/1/2.txt");
+    touch("src/2/1.txt");
+    touch("src/2/2.txt");
+
+    QVERIFY(QtShell::mv("src/1/1.txt","target/"));
+    QVERIFY(QFile::exists("target/1.txt"));
+    QVERIFY(QtShell::mv("src/1/2.txt","target/2.txt"));
+    QVERIFY(QFile::exists("target/2.txt"));
+    QVERIFY(QtShell::mv("src/2","target"));
+
+    QVERIFY(QFile::exists("target/2/1.txt"));
+    QVERIFY(QFile::exists("target/2/2.txt"));
+}
+

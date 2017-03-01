@@ -34,6 +34,8 @@ namespace QtShell {
 
     bool cp(const QString& options, const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
 
+    bool mv(const QString& source , const QString &target);
+
     QString pwd();
 
     QString cat(const QString& file);

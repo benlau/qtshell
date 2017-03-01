@@ -43,5 +43,7 @@ private slots:
     void test_pwd();
 
     void test_cat();
+
+    void test_mv();
 };
 
