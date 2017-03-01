@@ -1,5 +1,6 @@
 #include <QRegExp>
 #include <QtShell>
+#include <QPair>
 #include "qtshellpriv.h"
 
 using namespace QtShell::Private;
