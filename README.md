@@ -145,6 +145,8 @@ cp
 
     bool QtShell::cp(const QString& source , const QString &target);
     bool QtShell::cp(const QString& options, const QString& source , const QString &target);
+    bool cp(const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
+    bool cp(const QString& options, const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
 
 Copy files
 
@@ -160,6 +162,7 @@ Examples
 
     cp("-va","src/*", "/tmp");
 
+    cp("-va","src/*", "/tmp", log); // copy files and save the result of successfully copied file to log
 
 Options
 
@@ -169,6 +172,8 @@ Options
            and the entire subtree connected at that point.
 
      -v    Cause cp to be verbose, showing files as they are copied.
+
+
 
 cat
 ---
@@ -183,3 +188,16 @@ Examples
     QString content = QtShell::cat("input1.txt"); 
     
     QString content = QtShell::cat(QStringList() << "input1.txt" << "input2.txt);
+
+mv
+--
+
+    bool mv(const QString& source , const QString &target);
+
+move files
+
+Example
+
+    mv("src/*.txt","target");
+
+    mv("src/1.txt","target/2,txt");
