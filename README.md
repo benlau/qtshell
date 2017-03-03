@@ -145,8 +145,8 @@ cp
 
     bool QtShell::cp(const QString& source , const QString &target);
     bool QtShell::cp(const QString& options, const QString& source , const QString &target);
-    bool cp(const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
-    bool cp(const QString& options, const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
+    bool QtShell::cp(const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
+    bool QtShell::cp(const QString& options, const QString& source , const QString &target, QList<QPair<QString,QString> > &log);
 
 Copy files
 
@@ -178,8 +178,8 @@ Options
 cat
 ---
 
-    QString cat(const QString& file);
-    QString cat(const QStringList& files);
+    QString QtShell::cat(const QString& file);
+    QString QtShell::cat(const QStringList& files);
 
 Concatenate and print files
 
@@ -192,7 +192,7 @@ Examples
 mv
 --
 
-    bool mv(const QString& source , const QString &target);
+    bool QtShell::mv(const QString& source , const QString &target);
 
 move files
 
