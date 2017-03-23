@@ -366,23 +366,35 @@ void QtShellTests::test_cat()
 
 void QtShellTests::test_mv()
 {
+    QList<QPair<QString,QString> > log;
+
     QtShell::rm("-rf", "src");
     QtShell::rm("-rf", "target");
     mkdir("-p","src/1");
     mkdir("-p","src/2");
+    mkdir("-p","src/3");
     mkdir("-p","target");
     touch("src/1/1.txt");
     touch("src/1/2.txt");
     touch("src/2/1.txt");
     touch("src/2/2.txt");
+    touch("src/3/1.txt");
+    touch("src/3/2.txt");
+    touch("src/3/3.txt");
 
     QVERIFY(QtShell::mv("src/1/1.txt","target/"));
     QVERIFY(QFile::exists("target/1.txt"));
     QVERIFY(QtShell::mv("src/1/2.txt","target/2.txt"));
     QVERIFY(QFile::exists("target/2.txt"));
-    QVERIFY(QtShell::mv("src/2","target"));
+    QVERIFY(QtShell::mv("src/2","target", log));
 
     QVERIFY(QFile::exists("target/2/1.txt"));
     QVERIFY(QFile::exists("target/2/2.txt"));
+    QCOMPARE(log.size(), 1);
+    mkdir("-p", "target/3");
+    QVERIFY(QtShell::mv("src/3/*","target/3", log));
+    QCOMPARE(log.size(), 4);
+
+
 }
 
