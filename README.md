@@ -42,7 +42,9 @@ You may skip this step if you are already using qpm.
 
 3) Include header
 
+```
     #include <QtShell>
+```
 
 API
 ===
@@ -54,12 +56,16 @@ dirname
 
 Return directory portion of pathname.
 
+This function does not invoke any blocked API.
+
 basename
 --------
 
     QString QtShell::basename(const QString& path);
 
-return filename portion of pathname
+Return filename portion of pathname
+
+This function does not invoke any blocked API.
 
 find
 ----
