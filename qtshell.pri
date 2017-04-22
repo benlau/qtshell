@@ -11,4 +11,5 @@ HEADERS += \
 SOURCES += \
     $$PWD/qtshell.cpp \
     $$PWD/priv/qtshellpriv.cpp \
-    $$PWD/priv/qtshellmv.cpp
+    $$PWD/priv/qtshellmv.cpp \
+    $$PWD/priv/qtshellrealpath.cpp

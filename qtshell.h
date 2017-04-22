@@ -44,6 +44,9 @@ namespace QtShell {
     QString cat(const QString& file);
 
     QString cat(const QStringList& files);
+
+    // Print the resolved path
+    QString realpath(const QString& input);
 }
 
 #endif // QTSHELL_H

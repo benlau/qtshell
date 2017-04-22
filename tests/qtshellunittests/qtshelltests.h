@@ -45,5 +45,7 @@ private slots:
     void test_cat();
 
     void test_mv();
+
+    void test_realpath();
 };
 

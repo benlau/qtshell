@@ -398,3 +398,19 @@ void QtShellTests::test_mv()
 
 }
 
+void QtShellTests::test_realpath()
+{
+
+    QVERIFY(QtShell::realpath("tmp") ==  (QtShell::pwd() + "/tmp"));
+
+    QVERIFY(QtShell::realpath(QtShell::pwd()) ==  (QtShell::pwd()));
+
+    QUrl url(QtShell::pwd());
+    url.setScheme("file");
+
+    QVERIFY(QtShell::realpath(url.toString()) == QtShell::pwd());
+
+    url.setScheme("qrc");
+    QVERIFY(QtShell::realpath(url.toString()) == (QString(":") + QtShell::pwd()));
+}
+
