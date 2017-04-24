@@ -47,6 +47,13 @@ namespace QtShell {
 
     // Print the resolved path
     QString realpath(const QString& input);
+
+    QString realpath(const QString& basePath, const QString& subPath);
+
+    template <typename... Args>
+    QString realpath(const QString& basePath, const QString& subPath, Args... args) {
+        return realpath(realpath(basePath, subPath), args...);
+    }
 }
 
 #endif // QTSHELL_H

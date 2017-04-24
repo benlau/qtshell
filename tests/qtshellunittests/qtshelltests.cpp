@@ -403,6 +403,18 @@ void QtShellTests::test_realpath()
 
     QVERIFY(QtShell::realpath("tmp") ==  (QtShell::pwd() + "/tmp"));
 
+    QVERIFY(QtShell::realpath("tmp/") ==  (QtShell::pwd() + "/tmp"));
+
+    QVERIFY(QtShell::realpath("tmp/../") ==  (QtShell::pwd()));
+
+    QVERIFY(QtShell::realpath("tmp","subdir1") ==  (QtShell::pwd() + "/tmp/subdir1"));
+
+    QVERIFY(QtShell::realpath("tmp","subdir1","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+
+    QVERIFY(QtShell::realpath("tmp","/subdir1","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+
+    QVERIFY(QtShell::realpath("tmp","/subdir1/","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+
     QVERIFY(QtShell::realpath(QtShell::pwd()) ==  (QtShell::pwd()));
 
     QUrl url(QtShell::pwd());

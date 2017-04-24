@@ -1,6 +1,8 @@
 #include "qtshell.h"
 #include "priv/qtshellpriv.h"
 
+using namespace QtShell::Private;
+
 QString QtShell::realpath(const QString &file) {
     QString input = file;
 
@@ -15,8 +17,26 @@ QString QtShell::realpath(const QString &file) {
     QFileInfo info(input);
 
     if (info.isAbsolute()) {
-        return input;
+        return normalize(input);
     }
 
-    return info.absoluteFilePath();
+    return normalize(info.absoluteFilePath());
+}
+
+QString QtShell::realpath(const QString &basePath, const QString &subPath)
+{
+    QString res;
+    QString p = realpath(basePath); // No trailing "/"
+
+    if (subPath.size() == 0) {
+        return p;
+    }
+
+    if (subPath[0] == "/") {
+        res = realpath(basePath + subPath);
+    } else {
+        res = realpath(basePath + "/" + subPath);
+    }
+
+    return res;
 }

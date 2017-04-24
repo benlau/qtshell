@@ -10,7 +10,7 @@ namespace QtShell {
 
     namespace Private {
 
-        /// Remove tailing "/" from a path.
+        /// Remove trailing "/" from a path.
         QString normalize(QString path);
 
         typedef enum {
