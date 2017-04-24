@@ -32,7 +32,7 @@ QString QtShell::realpath(const QString &basePath, const QString &subPath)
         return p;
     }
 
-    if (subPath[0] == "/") {
+    if (subPath[0] == QChar('/')) {
         res = realpath(basePath + subPath);
     } else {
         res = realpath(basePath + "/" + subPath);
