@@ -415,6 +415,8 @@ void QtShellTests::test_mv()
 
 void QtShellTests::test_realpath_strip()
 {
+    QVERIFY(QtShell::realpath_strip(":tmp") ==  ":tmp");
+    QVERIFY(QtShell::realpath_strip(":/tmp") == ":/tmp");
 
     QVERIFY(QtShell::realpath_strip("tmp") ==  (QtShell::pwd() + "/tmp"));
 
