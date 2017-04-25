@@ -17,10 +17,10 @@ QString QtShell::realpath(const QString &file) {
     QFileInfo info(input);
 
     if (info.isAbsolute()) {
-        return normalize(input);
+        return canonicalPath(input);
     }
 
-    return normalize(info.absoluteFilePath());
+    return canonicalPath(info.absoluteFilePath());
 }
 
 QString QtShell::realpath(const QString &basePath, const QString &subPath)

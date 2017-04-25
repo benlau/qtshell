@@ -40,7 +40,9 @@ QString QtShell::Private::canonicalPath(const QString &path)
         }
     }
 
-    if (res.size() > 0 && !res[0].isEmpty()) {
+    if (res.size() > 0 &&
+       !res[0].isEmpty() && res[0][0] != QChar(':')) {
+        // "path begin with :/ is valid"
         res.insert(0, "");
     }
 
