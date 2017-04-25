@@ -122,7 +122,7 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
 QString QtShell::dirname(const QString &input)
 {
     // Don't use QFileInfo.absolutePath() since it return absolute path.
-    // The behaviour is different Unix's dirname command
+    // The behaviour is different than Unix's dirname command
 
     QString path = normalize(input);
     QStringList token = path.split("/");

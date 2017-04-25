@@ -11,7 +11,11 @@ namespace QtShell {
     namespace Private {
 
         /// Remove trailing "/" from a path.
-        QString normalize(QString path);
+        QString normalize(const QString& path);
+
+        /// Returns the canonical path including the file name, i.e. an absolute path without redundant "." or ".." elements and double "/"
+        /// The input must be an absolute path
+        QString canonicalPath(const QString& path);
 
         typedef enum {
             NO_ERROR = 0,

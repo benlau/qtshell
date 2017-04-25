@@ -14,7 +14,6 @@ namespace QtShell {
 
     QStringList find(const QString& path, const QString& nameFilter);
 
-
     bool rmdir(const QString& path);
 
     bool touch(const QString &path);

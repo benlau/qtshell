@@ -5,14 +5,46 @@
 
 using namespace QtShell::Private;
 
-QString QtShell::Private::normalize(QString path)
+QString QtShell::Private::normalize(const QString& path)
 {
-    if (path.count("/") == path.size()) {
+    QString p = path;
+    if (p.count("/") == p.size()) {
         return "/";
     }
 
-    path.remove(QRegExp("/*$"));
-    return path;
+    p.remove(QRegExp("/*$"));
+    return p;
+}
+
+QString QtShell::Private::canonicalPath(const QString &path)
+{
+    QString p = path;
+
+    p.replace(QRegExp("/+"),"/");
+
+    QStringList token = p.split("/");
+
+    QStringList res;
+
+    for (int i = 0 ; i < token.size(); i++) {
+        QString item = token[i];
+
+        if (item == ".") {
+            continue;
+        } else if (item == "..") {
+            if (res.size() > 0) {
+                res.removeLast();
+            }
+        } else {
+            res << item;
+        }
+    }
+
+    if (res.size() > 0 && !res[0].isEmpty()) {
+        res.insert(0, "");
+    }
+
+    return normalize(res.join("/"));
 }
 
 int QtShell::Private::bulk(const QString &source, const QString &target, std::function<bool (const QString &, const QString &, const QFileInfo &)> predicate)

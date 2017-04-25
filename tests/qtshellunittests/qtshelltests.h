@@ -10,6 +10,8 @@ public:
 private slots:
     void test_normalize();
 
+    void test_canonicalPath();
+
     void test_bulk();
 
     void test_basename();

@@ -21,6 +21,21 @@ void QtShellTests::test_normalize()
 {
     QVERIFY(normalize("/tmp") == "/tmp");
     QVERIFY(normalize("/tmp/") == "/tmp");
+
+}
+
+void QtShellTests::test_canonicalPath()
+{
+    QVERIFY(canonicalPath("/tmp") == "/tmp");
+    QVERIFY(canonicalPath("/tmp/") == "/tmp");
+    QVERIFY(canonicalPath("/tmp//subdir") == "/tmp/subdir");
+    QVERIFY(canonicalPath("//tmp///subdir/") == "/tmp/subdir");
+
+    QVERIFY(canonicalPath("//tmp/../subdir/") == "/subdir");
+
+    QVERIFY(canonicalPath("//tmp/../../subdir/") == "/subdir");
+    QVERIFY(canonicalPath("//tmp/./subdir/") == "/tmp/subdir");
+
 }
 
 void QtShellTests::test_bulk()
@@ -424,5 +439,6 @@ void QtShellTests::test_realpath()
 
     url.setScheme("qrc");
     QVERIFY(QtShell::realpath(url.toString()) == (QString(":") + QtShell::pwd()));
+
 }
 
