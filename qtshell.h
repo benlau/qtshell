@@ -44,14 +44,14 @@ namespace QtShell {
 
     QString cat(const QStringList& files);
 
-    // Print the resolved path
-    QString realpath(const QString& input);
+    // Implementation of `realpath -s`, return the canonicalised absolute pathname without resolving the symbolic link
+    QString realpath_strip(const QString& input);
 
-    QString realpath(const QString& basePath, const QString& subPath);
+    QString realpath_strip(const QString& basePath, const QString& subPath);
 
     template <typename... Args>
-    QString realpath(const QString& basePath, const QString& subPath, Args... args) {
-        return realpath(realpath(basePath, subPath), args...);
+    QString realpath_strip(const QString& basePath, const QString& subPath, Args... args) {
+        return realpath_strip(realpath_strip(basePath, subPath), args...);
     }
 }
 

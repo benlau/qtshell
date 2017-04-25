@@ -48,6 +48,6 @@ private slots:
 
     void test_mv();
 
-    void test_realpath();
+    void test_realpath_strip();
 };
 
