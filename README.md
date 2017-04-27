@@ -207,3 +207,20 @@ Example
     mv("src/*.txt","target");
 
     mv("src/1.txt","target/2,txt");
+    
+realpath_strip
+--------------
+
+    QString realpath_strip(...);
+
+Implementation of `realpath --strip` which prints the canonicalized absolute path (remove "." & "..") of input path without expanding the symbolic link.
+
+`realpath_strip` supports variadic arguments. It joins all the input path by "/"  then produces the output.
+
+Example
+
+    realpath_strip("tmp/subdir"); // pwd() + "/tmp/subdir";
+    realpath_strip("/tmp", "subdir1", "/subdir2/"); // "/tmp/subdir1/subdir2"
+    
+
+
