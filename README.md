@@ -222,6 +222,8 @@ Example
     realpath_strip("tmp/subdir"); // pwd() + "/tmp/subdir";
     realpath_strip("/tmp", "subdir1", "/subdir2/"); // "/tmp/subdir1/subdir2"
     realpath_strip("/tmp", "subdir1", "..//subdir2/"); // "/tmp/subdir2"
+    realpath_strip("file:///tmp1"); // "/tmp1"
+    realpath_strip("qrc:///tmp1"); // ":/tmp1"
 
 
 
