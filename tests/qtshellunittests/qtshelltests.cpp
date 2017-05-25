@@ -415,34 +415,34 @@ void QtShellTests::test_mv()
 
 void QtShellTests::test_realpath_strip()
 {
-    QVERIFY(QtShell::realpath_strip(":tmp") ==  ":tmp");
-    QVERIFY(QtShell::realpath_strip(":/tmp") == ":/tmp");
+    QCOMPARE(QtShell::realpath_strip(":tmp"),  QString(":tmp"));
+    QCOMPARE(QtShell::realpath_strip(":/tmp"), QString(":/tmp"));
 
-    QVERIFY(QtShell::realpath_strip("tmp") ==  (QtShell::pwd() + "/tmp"));
+    QCOMPARE(QtShell::realpath_strip("tmp"),  (QtShell::pwd() + "/tmp"));
 
-    QVERIFY(QtShell::realpath_strip("tmp/") ==  (QtShell::pwd() + "/tmp"));
+    QCOMPARE(QtShell::realpath_strip("tmp/"),  (QtShell::pwd() + "/tmp"));
 
-    QVERIFY(QtShell::realpath_strip("tmp/../") ==  (QtShell::pwd()));
+    QCOMPARE(QtShell::realpath_strip("tmp/../"),  (QtShell::pwd()));
 
-    QVERIFY(QtShell::realpath_strip("tmp","subdir1") ==  (QtShell::pwd() + "/tmp/subdir1"));
+    QCOMPARE(QtShell::realpath_strip("tmp","subdir1"),  (QtShell::pwd() + "/tmp/subdir1"));
 
-    QVERIFY(QtShell::realpath_strip("tmp","subdir1","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+    QCOMPARE(QtShell::realpath_strip("tmp","subdir1","subdir2"),  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
 
-    QVERIFY(QtShell::realpath_strip("tmp","/subdir1","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+    QCOMPARE(QtShell::realpath_strip("tmp","/subdir1","subdir2"),  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
 
-    QVERIFY(QtShell::realpath_strip("tmp","/subdir1/","subdir2") ==  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
+    QCOMPARE(QtShell::realpath_strip("tmp","/subdir1/","subdir2"),  (QtShell::pwd() + "/tmp/subdir1/subdir2"));
 
-    QVERIFY(QtShell::realpath_strip("tmp","/subdir1/","../subdir2") ==  (QtShell::pwd() + "/tmp/subdir2"));
+    QCOMPARE(QtShell::realpath_strip("tmp","/subdir1/","../subdir2"),  (QtShell::pwd() + "/tmp/subdir2"));
 
-    QVERIFY(QtShell::realpath_strip(QtShell::pwd()) ==  (QtShell::pwd()));
+    QCOMPARE(QtShell::realpath_strip(QtShell::pwd()),  (QtShell::pwd()));
 
     QUrl url(QtShell::pwd());
     url.setScheme("file");
 
-    QVERIFY(QtShell::realpath_strip(url.toString()) == QtShell::pwd());
+    QCOMPARE(QtShell::realpath_strip(url.toString()), QtShell::pwd());
 
     url.setScheme("qrc");
-    QVERIFY(QtShell::realpath_strip(url.toString()) == (QString(":") + QtShell::pwd()));
+    QCOMPARE(QtShell::realpath_strip(url.toString()), (QString(":") + QtShell::pwd()));
 
 }
 
