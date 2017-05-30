@@ -18,7 +18,8 @@ include(../../qtshell.pri)
 DISTFILES += \
     qpm.json \
     ../../README.md \
-    ../../qpm.json
+    ../../qpm.json \
+    ../../appveyor.yml
 
 HEADERS += \
     qtshelltests.h
