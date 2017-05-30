@@ -415,6 +415,8 @@ void QtShellTests::test_mv()
 
 void QtShellTests::test_realpath_strip()
 {
+    QCOMPARE(QtShell::realpath_strip(QtShell::pwd()),  QtShell::pwd());
+
     QCOMPARE(QtShell::realpath_strip(":tmp"),  QString(":tmp"));
     QCOMPARE(QtShell::realpath_strip(":/tmp"), QString(":/tmp"));
 

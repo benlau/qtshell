@@ -40,11 +40,14 @@ QString QtShell::Private::canonicalPath(const QString &path)
         }
     }
 
+#ifndef Q_OS_WIN
+    // Insert an empty string at the beginning. So it will add a "/" when it is calling "join()"
     if (res.size() > 0 &&
        !res[0].isEmpty() && res[0][0] != QChar(':')) {
         // "path begin with :/ is valid"
         res.insert(0, "");
     }
+#endif
 
     return normalize(res.join("/"));
 }
