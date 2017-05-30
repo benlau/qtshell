@@ -58,7 +58,7 @@ QString QtShell::Private::canonicalPath(const QString &path, bool isWindow)
         }
     } else {
         // No leading "/"
-        while (res.size() && res[0]()) {
+        while (res.size() && res[0].isEmpty()) {
             res.removeAt(0);
         }
     }
