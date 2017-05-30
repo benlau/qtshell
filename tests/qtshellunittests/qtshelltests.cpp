@@ -17,6 +17,16 @@ QtShellTests::QtShellTests(QObject *parent) : QObject(parent)
     Q_UNUSED(ref);
 }
 
+#define PRINT(x) qDebug() << #x << (x);
+
+void QtShellTests::system_info()
+{
+    PRINT(QFileInfo("C:/temp").isAbsolute());
+    PRINT(QFileInfo(":/temp").isAbsolute());
+
+    PRINT(QUrl("file:///C:/temp").path());
+}
+
 void QtShellTests::test_normalize()
 {
     QVERIFY(normalize("/tmp") == "/tmp");
@@ -35,6 +45,9 @@ void QtShellTests::test_canonicalPath()
 
     QVERIFY(canonicalPath("//tmp/../../subdir/") == "/subdir");
     QVERIFY(canonicalPath("//tmp/./subdir/") == "/tmp/subdir");
+
+    QCOMPARE(canonicalPath("C:/temp", true),  QString("C:/temp"));
+    QCOMPARE(canonicalPath("/C:/temp", true),  QString("C:/temp"));
 
 }
 

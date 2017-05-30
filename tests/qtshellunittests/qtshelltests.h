@@ -8,6 +8,10 @@ public:
     explicit QtShellTests(QObject *parent = 0);
 
 private slots:
+
+    /// Print system information and the behaviour of API call
+    void system_info();
+
     void test_normalize();
 
     void test_canonicalPath();

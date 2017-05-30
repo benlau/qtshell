@@ -17,6 +17,8 @@ namespace QtShell {
         /// The input must be an absolute path
         QString canonicalPath(const QString& path);
 
+        QString canonicalPath(const QString& path, bool isWindow);
+
         typedef enum {
             NO_ERROR = 0,
             INVALID_TARGET = -1,

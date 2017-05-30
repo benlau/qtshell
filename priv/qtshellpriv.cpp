@@ -18,6 +18,15 @@ QString QtShell::Private::normalize(const QString& path)
 
 QString QtShell::Private::canonicalPath(const QString &path)
 {
+    bool isWindow = false;
+#ifdef Q_OS_WIN
+    isWindow = true;
+#endif
+    return canonicalPath(path, isWindow);
+}
+
+QString QtShell::Private::canonicalPath(const QString &path, bool isWindow)
+{
     QString p = path;
 
     p.replace(QRegExp("/+"),"/");
@@ -40,17 +49,23 @@ QString QtShell::Private::canonicalPath(const QString &path)
         }
     }
 
-#ifndef Q_OS_WIN
-    // Insert an empty string at the beginning. So it will add a "/" when it is calling "join()"
-    if (res.size() > 0 &&
-       !res[0].isEmpty() && res[0][0] != QChar(':')) {
-        // "path begin with :/ is valid"
-        res.insert(0, "");
+    if (!isWindow) {
+        // Insert an empty string at the beginning. So it will add a "/" when it is calling "join()"
+        if (res.size() > 0 &&
+           !res[0].isEmpty() && res[0][0] != QChar(':')) {
+            // "path begin with :/ is valid"
+            res.insert(0, "");
+        }
+    } else {
+        // No leading "/"
+        while (res.size() && res[0]()) {
+            res.removeAt(0);
+        }
     }
-#endif
 
     return normalize(res.join("/"));
 }
+
 
 int QtShell::Private::bulk(const QString &source, const QString &target, std::function<bool (const QString &, const QString &, const QFileInfo &)> predicate)
 {
