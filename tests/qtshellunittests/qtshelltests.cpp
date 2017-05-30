@@ -36,15 +36,15 @@ void QtShellTests::test_normalize()
 
 void QtShellTests::test_canonicalPath()
 {
-    QVERIFY(canonicalPath("/tmp") == "/tmp");
-    QVERIFY(canonicalPath("/tmp/") == "/tmp");
-    QVERIFY(canonicalPath("/tmp//subdir") == "/tmp/subdir");
-    QVERIFY(canonicalPath("//tmp///subdir/") == "/tmp/subdir");
+    QVERIFY(canonicalPath("/tmp", false) == "/tmp");
+    QVERIFY(canonicalPath("/tmp/", false) == "/tmp");
+    QVERIFY(canonicalPath("/tmp//subdir", false) == "/tmp/subdir");
+    QVERIFY(canonicalPath("//tmp///subdir/", false) == "/tmp/subdir");
 
-    QVERIFY(canonicalPath("//tmp/../subdir/") == "/subdir");
+    QVERIFY(canonicalPath("//tmp/../subdir/", false) == "/subdir");
 
-    QVERIFY(canonicalPath("//tmp/../../subdir/") == "/subdir");
-    QVERIFY(canonicalPath("//tmp/./subdir/") == "/tmp/subdir");
+    QVERIFY(canonicalPath("//tmp/../../subdir/", false) == "/subdir");
+    QVERIFY(canonicalPath("//tmp/./subdir/", false) == "/tmp/subdir");
 
     QCOMPARE(canonicalPath("C:/temp", true),  QString("C:/temp"));
     QCOMPARE(canonicalPath("/C:/temp", true),  QString("C:/temp"));
