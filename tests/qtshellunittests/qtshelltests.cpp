@@ -438,13 +438,12 @@ void QtShellTests::test_realpath_strip()
 
     QCOMPARE(QtShell::realpath_strip(QtShell::pwd()),  (QtShell::pwd()));
 
-    QUrl url(QtShell::pwd());
-    url.setScheme("file");
+    QUrl url = QUrl::fromLocalFile(QtShell::pwd());
+    qDebug() << url;
 
     QCOMPARE(QtShell::realpath_strip(url.toString()), QtShell::pwd());
 
-    url.setScheme("qrc");
-    QCOMPARE(QtShell::realpath_strip(url.toString()), (QString(":") + QtShell::pwd()));
+    QCOMPARE(QtShell::realpath_strip("qrc:/tmp1.txt"), QString(":/tmp1.txt"));
 
 }
 
