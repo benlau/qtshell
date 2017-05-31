@@ -1,6 +1,10 @@
 QtShell - Manipulate files by a shell command style API
 ===============================================
 
+[![Build Status](https://www.travis-ci.org/benlau/qtshell.svg?branch=master)](https://www.travis-ci.org/benlau/qtshell)
+[![Build status](https://ci.appveyor.com/api/projects/status/2qry21dualt0t9xe?svg=true)](https://ci.appveyor.com/project/benlau/qtshell)
+
+
 QtShell is a Qt library that provides a set of file manipulation API in shell command style.
 
 Example Usages
