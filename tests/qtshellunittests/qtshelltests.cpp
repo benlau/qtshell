@@ -390,6 +390,11 @@ void QtShellTests::test_cat()
     content = cat(QStringList() << "cat.txt" << "cat.txt");
     QVERIFY(content == "0123456789\n0123456789");
 
+    QUrl url = QUrl::fromLocalFile(QtShell::pwd() + "/cat.txt");
+    qDebug() << "cat" << url.toString();
+    content = cat(url.toString());
+    QVERIFY(content == "0123456789");
+
 }
 
 void QtShellTests::test_mv()

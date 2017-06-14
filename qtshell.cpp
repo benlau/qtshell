@@ -448,16 +448,18 @@ QString QtShell::pwd()
 
 QString QtShell::cat(const QString &file)
 {
-    QFileInfo info(file);
+    QString path = realpath_strip(file);
+
+    QFileInfo info(path);
 
     if (!info.exists()) {
         qWarning() << QString("cat: %1: No such file or directory").arg(file);
         return "";
     }
 
-    QFile f(file);
+    QFile f(path);
     if (!f.open(QIODevice::ReadOnly)) {
-        qWarning() << QString("cat: %1: %2").arg(f.errorString());
+        qWarning() << QString("cat: %1: %2").arg(f.errorString()).arg(file);
         return "";
     }
 
