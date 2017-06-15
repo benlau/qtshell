@@ -248,6 +248,19 @@ void QtShellTests::test_rm()
     QVERIFY(!dir.exists());
 
     QVERIFY(rm("-f", "a-file-not-existed"));
+
+    {
+        // Remove directory with absolute path
+        QString path = QtShell::pwd() + "/tmp";
+        QDir dir(path);
+
+        qDebug() << path;
+        mkdir("-p", path);
+        QVERIFY(dir.exists());
+        QVERIFY(rm("-vr",path));
+        QVERIFY(!dir.exists());
+    }
+
 }
 
 void QtShellTests::test_mkdir()
