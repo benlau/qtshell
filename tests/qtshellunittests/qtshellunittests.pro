@@ -19,7 +19,9 @@ DISTFILES += \
     qpm.json \
     ../../README.md \
     ../../qpm.json \
-    ../../appveyor.yml
+    ../../appveyor.yml \
+    ../../.travis.yml
+
 
 HEADERS += \
     qtshelltests.h
