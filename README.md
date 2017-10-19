@@ -69,7 +69,7 @@ dirname
 
 Return directory portion of pathname.
 
-This function does not invoke any blocked API.
+Remarks: It is a non-blocking function
 
 basename
 --------
@@ -78,7 +78,7 @@ basename
 
 Return filename portion of pathname
 
-This function does not invoke any blocked API.
+Remarks: It is a non-blocking function
 
 find
 ----

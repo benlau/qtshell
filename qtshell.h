@@ -10,6 +10,15 @@ namespace QtShell {
 
     QString basename(const QString& path);
 
+    class FindOptions {
+    public:
+        FindOptions();
+
+        int maxdepth;
+    };
+
+    QStringList find(const FindOptions& options, const QString& path, const QStringList& nameFilters = QStringList());
+
     QStringList find(const QString& path, const QStringList& nameFilters = QStringList());
 
     QStringList find(const QString& path, const QString& nameFilter);

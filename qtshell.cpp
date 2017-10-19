@@ -54,10 +54,20 @@ static QStringList preservedPaths() {
     return preservePaths;
 }
 
-QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
+
+QStringList QtShell::find(const QtShell::FindOptions &options, const QString &root, const QStringList &nameFilters)
 {
     QDir dir(root);
     QString absRoot = dir.absolutePath();
+
+    class QueueItem {
+    public:
+        QueueItem(QString path, int depth = 1) : path(path) , depth(depth) {
+            depth = 1;
+        }
+        QString path;
+        int depth;
+    };
 
     QStringList result;
 
@@ -88,14 +98,18 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
         result << resolve(absPath);
     };
 
-    QQueue<QString> queue;
-    queue.enqueue(absRoot);
+    QQueue<QueueItem> queue;
+    queue.enqueue(QueueItem(absRoot));
     append(absRoot, "");
 
     while (queue.size() > 0) {
-        QString current = queue.dequeue();
-        QDir dir(current);
+        QueueItem current = queue.dequeue();
+        QDir dir(current.path);
         QFileInfoList infos = dir.entryInfoList();
+
+        if (options.maxdepth >=0 && current.depth > options.maxdepth) {
+            continue;
+        }
 
         for (int i = 0 ; i < infos.size() ; i++) {
             QFileInfo info = infos.at(i);
@@ -107,7 +121,7 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
             QString absPath = info.absoluteFilePath();
 
             if (info.isDir()) {
-                queue.enqueue(absPath);
+                queue.enqueue(QueueItem(absPath, current.depth + 1) );
                 append(absPath, info.fileName());
                 continue;
             }
@@ -117,6 +131,13 @@ QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
     }
 
     return result;
+}
+
+
+QStringList QtShell::find(const QString &root, const QStringList &nameFilters)
+{
+    FindOptions options;
+    return find(options, root, nameFilters);
 }
 
 QString QtShell::dirname(const QString &input)
@@ -480,4 +501,9 @@ QString QtShell::cat(const QStringList &files)
     }
 
     return content;
+}
+
+QtShell::FindOptions::FindOptions()
+{
+    maxdepth = -1;
 }

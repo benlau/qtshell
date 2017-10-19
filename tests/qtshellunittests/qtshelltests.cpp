@@ -172,6 +172,37 @@ void QtShellTests::test_find_verify_filters()
     QCOMPARE(find("findTestCases", "a*.txt").size(), 1);
 }
 
+void QtShellTests::test_find_options()
+{
+    QString folder = realpath_strip(pwd(), QTest::currentTestFunction());
+    mkdir("-p", folder +"/A");
+    mkdir("-p", folder +"/A/A1");
+    touch(folder + "/file1.txt");
+    touch(folder + "/A/file2.txt");
+    touch(folder + "/A/A1/file3.txt");
+
+    {
+        // Depth
+        FindOptions options;
+
+        QCOMPARE(find(folder).size(), 6);
+
+        options.maxdepth = 0;
+        QCOMPARE(find(options,folder).size(), 1);
+
+        options.maxdepth = 1;
+        QCOMPARE(find(options,folder).size(), 3);
+
+        options.maxdepth = 2;
+        QCOMPARE(find(options,folder).size(), 5);
+
+        options.maxdepth = 3;
+        QCOMPARE(find(options,folder).size(), 6);
+
+    }
+
+}
+
 void QtShellTests::test_rmdir()
 {
     QDir dir("tmp");
