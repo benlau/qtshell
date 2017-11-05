@@ -57,7 +57,7 @@ static QStringList preservedPaths() {
 
 QStringList QtShell::find(const QtShell::FindOptions &options, const QString &root, const QStringList &nameFilters)
 {
-    QDir dir(root);
+    QDir dir(realpath_strip(root));
     QString absRoot = dir.absolutePath();
 
     class QueueItem {
