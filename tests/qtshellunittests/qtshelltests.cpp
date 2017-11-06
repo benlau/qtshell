@@ -159,6 +159,12 @@ void QtShellTests::test_find()
 
     QVERIFY(files.filter(QRegExp("*.h",Qt::CaseInsensitive,QRegExp::Wildcard)).size() == files.size());
 
+    // find by file Url
+    files = find(QUrl::fromLocalFile(QtShell::pwd() + "/tmp").toString());
+    qDebug() << files;
+    QCOMPARE(files.size() , 2);
+    QVERIFY(files[0].indexOf("file") == 0);
+
 }
 
 void QtShellTests::test_find_verify_filters()
@@ -438,6 +444,10 @@ void QtShellTests::test_cat()
     qDebug() << "cat" << url.toString();
     content = cat(url.toString());
     QVERIFY(content == "0123456789");
+
+    content = cat(QUrl::fromLocalFile(QtShell::pwd() + "/cat.txt").toString());
+    QVERIFY(content == "0123456789");
+
 
 }
 
