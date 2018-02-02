@@ -517,5 +517,14 @@ void QtShellTests::test_realpath_strip()
 
     QCOMPARE(QtShell::realpath_strip("qrc:/tmp1.txt"), QString(":/tmp1.txt"));
 
+    QCOMPARE(QtShell::realpath_strip("file:///tmp1.txt"), QString("/tmp1.txt"));
+
+#ifdef Q_OS_WIN32
+    qDebug() << QtShell::realpath_strip("file://networkdrive/tmp1.txt");
+    QCOMPARE(QtShell::realpath_strip("file://networkdrive/tmp1.txt"), QString("\\networkdrive\tmp1.txt"));
+#else
+    QCOMPARE(QtShell::realpath_strip("file://networkdrive/tmp1.txt"), QString("/tmp1.txt"));
+#endif
+
 }
 
