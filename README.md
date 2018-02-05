@@ -35,6 +35,10 @@ QString content = QtShell::cat(input);
     realpath_strip("tmp", "subdir1", "..//subdir2/"); // "$PWD/tmp/subdir2"
     realpath_strip("file:///tmp1"); // "/tmp1"
     realpath_strip("qrc:///tmp1"); // ":/tmp1"
+    
+    // Windows    
+   realpath_strip("file://networkdrive/tmp1"); // "\\networkdrive\tmp1"
+
 ```
 
 
