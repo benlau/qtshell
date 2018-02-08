@@ -15,17 +15,26 @@ QString QtShell::realpath_strip(const QString &file) {
         // Handle network drive.
         if (!url.host().isEmpty()) { // It is a network drive
             input = "//" + url.host() + url.path();
-            return QDir::toNativeSeparators(input);
+            return input;
         }
 #endif
-
     } else if (url.scheme() == "qrc") {
         input = QString(":") + url.path();
     }
 
+#ifdef Q_OS_WIN32
+    // For processing network path
+
+    if (input.startsWith("\\\\") || input.startsWith("//")) {
+        input.replace("\\", "/");
+        return input;
+    }
+
+#endif
+
     QFileInfo info(input);
 
-    if (info.isAbsolute()) { // It is not a file blocking call
+    if (info.isAbsolute()) { // It is not a I/O blocking call
         return canonicalPath(input);
     }
 

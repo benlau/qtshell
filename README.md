@@ -234,6 +234,8 @@ Implementation of `realpath --strip` which prints the canonicalized absolute pat
 
 `realpath_strip` supports variadic arguments. It joins all the input path by "/"  then produces the output.
 
+It is not a blocking API.
+
 Example
 
     realpath_strip("tmp/subdir"); // pwd() + "/tmp/subdir";

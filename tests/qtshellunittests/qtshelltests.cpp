@@ -522,7 +522,12 @@ void QtShellTests::test_realpath_strip()
 #ifdef Q_OS_WIN32
     qDebug().noquote() << QtShell::realpath_strip("file://networkdrive/tmp1.txt");
     QCOMPARE(QtShell::realpath_strip("file:///E:/dir/tmp.txt"), QString("E:/dir/tmp.txt"));
-    QCOMPARE(QtShell::realpath_strip("file://networkdrive/tmp1.txt"), QString("\\\\networkdrive\\tmp1.txt"));
+    QCOMPARE(QtShell::realpath_strip("file://networkdrive/tmp1.txt"), QString("//networkdrive/tmp1.txt"));
+    QCOMPARE(QtShell::realpath_strip("\\\\networkdrive\\tmp1.txt"), QString("//networkdrive/tmp1.txt"));
+    QCOMPARE(QtShell::realpath_strip("//networkdrive/tmp1.txt"), QString("//networkdrive/tmp1.txt"));
+
+    // QFileDialog::getOpenFileName returns folder in a way like //networkdrive/tmp1.txt
+
 #else
     /// The no. of "/" is critical for windows system. It help to determine is it a network drive
     QCOMPARE(QtShell::realpath_strip("file:///tmp1.txt"), QString("/tmp1.txt"));
