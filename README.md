@@ -239,4 +239,15 @@ Example
     realpath_strip("qrc:///tmp1"); // ":/tmp1"
 
 
+pwd
+---
 
+    QString pwd();
+
+Implementation of `pwd` which return the current working directory name
+
+Example
+
+    pwd();
+
+/pwd
