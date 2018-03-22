@@ -35,6 +35,10 @@ QString content = QtShell::cat(input);
     realpath_strip("tmp", "subdir1", "..//subdir2/"); // "$PWD/tmp/subdir2"
     realpath_strip("file:///tmp1"); // "/tmp1"
     realpath_strip("qrc:///tmp1"); // ":/tmp1"
+    
+    // Windows    
+   realpath_strip("file://networkdrive/tmp1"); // "\\networkdrive\tmp1"
+
 ```
 
 
@@ -229,6 +233,8 @@ realpath_strip
 Implementation of `realpath --strip` which prints the canonicalized absolute path (remove "." & "..") of input path without expanding the symbolic link.
 
 `realpath_strip` supports variadic arguments. It joins all the input path by "/"  then produces the output.
+
+It is not a blocking API.
 
 Example
 
