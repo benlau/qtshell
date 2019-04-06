@@ -542,7 +542,7 @@ void QtShellTests::test_which()
 #endif
 
 #ifdef Q_OS_WIN32
-    QCOMPARE(QtShell::which("ping"), QString("c:/Windows/System32/PING.EXE").toLower());
+    QCOMPARE(QtShell::which("ping").toLower(), QString("c:\\Windows\\System32\\PING.EXE").toLower());
 #endif
 }
 

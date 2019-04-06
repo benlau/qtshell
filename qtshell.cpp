@@ -525,7 +525,7 @@ QString QtShell::which(const QString &program)
     for (auto& path: paths) {
         auto file = realpath_strip(path, exec);
         if (QFile::exists(file)) {
-            res = file;
+            res = QDir::toNativeSeparators(file);
             break;
         }
     }
