@@ -507,3 +507,27 @@ QtShell::FindOptions::FindOptions()
 {
     maxdepth = -1;
 }
+
+QString QtShell::which(const QString &program)
+{
+    auto path = qgetenv("PATH");
+#ifdef Q_OS_WIN32
+    auto separator = ';';
+    auto exec = program + ".exe";
+#else
+    auto separator = ':';
+    auto exec = program;
+#endif
+
+    auto paths = path.split(separator);
+    QString res;
+
+    for (auto& path: paths) {
+        auto file = realpath_strip(path, exec);
+        if (QFile::exists(file)) {
+            res = file;
+            break;
+        }
+    }
+    return res;
+}

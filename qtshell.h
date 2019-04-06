@@ -62,6 +62,8 @@ namespace QtShell {
     QString realpath_strip(const QString& basePath, const QString& subPath, Args... args) {
         return realpath_strip(realpath_strip(basePath, subPath), args...);
     }
+
+    QString which(const QString& program);
 }
 
 #endif // QTSHELL_H

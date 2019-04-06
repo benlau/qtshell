@@ -55,5 +55,7 @@ private slots:
     void test_mv();
 
     void test_realpath_strip();
+
+    void test_which();
 };
 

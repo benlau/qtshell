@@ -527,12 +527,22 @@ void QtShellTests::test_realpath_strip()
     QCOMPARE(QtShell::realpath_strip("//networkdrive/tmp1.txt"), QString("//networkdrive/tmp1.txt"));
 
     // QFileDialog::getOpenFileName returns folder in a way like //networkdrive/tmp1.txt
-
 #else
     /// The no. of "/" is critical for windows system. It help to determine is it a network drive
     QCOMPARE(QtShell::realpath_strip("file:///tmp1.txt"), QString("/tmp1.txt"));
     QCOMPARE(QtShell::realpath_strip("file://networkdrive/tmp1.txt"), QString("/tmp1.txt"));
 #endif
 
+}
+
+void QtShellTests::test_which()
+{
+#ifdef Q_OS_UNIX
+    QCOMPARE(QtShell::which("sh"), QString("/bin/sh"));
+#endif
+
+#ifdef Q_OS_WIN32
+    QCOMPARE(QtShell::which("ping"), QString("c:/Windows/System32/PING.EXE").toLower());
+#endif
 }
 
