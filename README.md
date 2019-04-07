@@ -248,7 +248,9 @@ Example
 pwd
 ---
 
+```
     QString pwd();
+```
 
 Implementation of `pwd` which return the current working directory name
 
@@ -256,4 +258,21 @@ Example
 
     pwd();
 
-/pwd
+which
+-----
+
+```
+    QString which(const QString& program)
+```
+
+Locate a program file in the user's PATH environment variable.
+
+Example:
+
+```
+    // Linux / Mac
+    which("sh"); // "/bin/sh"
+
+    // Windows
+    which("ping"); // "c:\\Windows\\System32\\PING.EXE"
+```
