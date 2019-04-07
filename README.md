@@ -265,7 +265,7 @@ which
     QString which(const QString& program)
 ```
 
-Locate a program file in the user's PATH environment variable.
+Locate a program file in the user's path listed in the PATH environment variable.
 
 Example:
 
